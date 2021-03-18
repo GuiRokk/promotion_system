@@ -1,6 +1,5 @@
 <%= link_to 'Voltar', root_path %>
 
-
 <%= link_to 'Registrar uma promoção', new_promotion_path %>
 
 <% if @promotions.empty?%>
@@ -16,5 +15,3 @@
     <dd><%= number_to_percentage promotion.discount_rate, separator:",", precision:2 %></dd>
   </dl>
 <% end %>
-
-

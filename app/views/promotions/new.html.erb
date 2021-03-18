@@ -1,5 +1,17 @@
 <h1>Registrar uma promoção</h1>
 
+
+  <% if @promotion.errors.any?%>
+    <h4>Não foi possível salvar. Encontramos alguns erros:</h4>
+      <ul>
+      <% @promotion.errors.full_messages.each do |message|%>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+  <%end%>
+
+
+
 <%= form_with model: @promotion do |f| %>
   <div>
     <%= f.label :name, 'Nome' %>
