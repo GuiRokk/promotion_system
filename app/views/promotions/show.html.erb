@@ -1,15 +1,19 @@
 <div>
   <%= link_to "Voltar", promotions_path, class: 'btn' %>
+    <% if @promotion.coupons.empty?%>
+      <%= link_to 'Editar promoção', edit_promotion_path(@promotion), class:'btn' %>
+    <% end %>
 </div>
 <br>
+
 <%= flash[:notice] %>
 
 <h3><%= @promotion.name %></h3>
 <table class='table'>
   <thead>
     <tr>
+      <th>Código</th>
       <th>Descrição</th>
-      <th>Codigo</th>
       <th>Desconto</th>
       <th>Quantidade</th>
       <th>Data de Expiração</th>
@@ -17,8 +21,8 @@
   </thead>
   <tbody>
      <tr class='data'>
-      <th><%= @promotion.description %></th>
       <th><%= @promotion.code %></th>
+      <th><%= @promotion.description %></th>
       <th><%= number_to_percentage @promotion.discount_rate, precision:2, separator:',' %></th>
       <th><%= @promotion.coupon_quantity %></th>
       <th><%= @promotion.expiration_date.strftime('%d/%m/%Y') %></th>
@@ -29,12 +33,12 @@
 
 <% if @promotion.coupons.empty?%>
     <%= link_to 'Gerar cupons', generate_coupons_promotion_path(@promotion), method: :post, class: 'btn' %>
-<% end %>
-
+<% else %>
+  <h3>Cupons ativos</h3>
   <% @promotion.coupons.each do |coupon| %>
     <p><%= coupon.code %></p>
   <% end %>
-
+<% end %>
 
   <!--<dl>
   <dt>Descrição</dt>

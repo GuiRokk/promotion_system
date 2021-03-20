@@ -100,12 +100,6 @@ class PromotionsTest < ApplicationSystemTestCase
     visit root_path
     click_on 'Promoções'
     click_on 'Registrar uma promoção'
-    #fill_in 'Nome', with: ''
-    #fill_in 'Descrição', with: ''
-    #fill_in 'Código', with: ''
-    #fill_in 'Desconto', with: ''
-    #fill_in 'Quantidade de cupons', with: ''
-    #fill_in 'Data de término', with: ''
     click_on 'Criar promoção'
 
     assert_text 'não pode ficar em branco', count: 5
@@ -130,8 +124,8 @@ class PromotionsTest < ApplicationSystemTestCase
   test "generate coupons for a promotion" do
     #Arrange
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
     
     #Act
     visit promotion_path(promotion)
@@ -144,5 +138,64 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text    'NATAL10-0001'
     assert_text    'NATAL10-0100'
     assert_no_text 'NATAL10-0101'
+    assert_no_link 'Editar promoção'
   end
+
+  test 'user edits a promotion' do
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+    
+    visit promotion_path(promotion)
+    click_on "Editar promoção"
+    fill_in 'Nome', with: 'Halloween'
+    click_on 'Salvar mudanças'
+
+    assert_text 'Promoção editada com sucesso'
+    assert_text 'Halloween'
+    assert_no_link 'Natal'
+  end
+
+  test 'user edits a promotion with blanks' do
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+    
+    visit promotion_path(promotion)
+    click_on "Editar promoção"
+    fill_in 'Nome', with: ''
+    fill_in 'Descrição', with: ''
+    fill_in 'Código', with: ''
+    fill_in 'Desconto', with: ''
+    fill_in 'Quantidade de cupons', with: ''
+    fill_in 'Data de término', with: ''
+    click_on 'Salvar mudanças'
+
+    assert_text 'não pode ficar em branco', count: 5
+  end
+
+  test 'user edits a promotion with repeated name/code' do
+    Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                      description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15', discount_rate: 15,
+                      expiration_date: '22/12/2033')
+
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+                                  
+    
+    visit promotion_path(promotion)
+    click_on "Editar promoção"
+    fill_in 'Nome', with: 'Cyber Monday'
+    fill_in 'Código', with: 'CYBER15'
+
+    click_on 'Salvar mudanças'
+
+    assert_text 'deve ser único', count: 2
+  end
+
+
+
+
 end
