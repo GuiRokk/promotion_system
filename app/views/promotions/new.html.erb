@@ -7,9 +7,9 @@
 <% if @promotion.errors.any?%>
   <h4>Encontramos alguns erros...</h4>
   <ul>
-  <% @promotion.errors.each do |error| %>
-    <li><%= error.full_message %></li>
-  <% end %>
+    <% @promotion.errors.each do |error| %>
+      <li><%= error.full_message %></li>
+    <% end %>
   </ul>
 <% end %>
 

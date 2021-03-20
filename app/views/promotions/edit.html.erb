@@ -19,27 +19,27 @@
     <%= form.text_field :name %>
   </div>
   <br>
-  <div> 
+  <div>
     <%= form.label :description,'Descrição:' %>
     <%= form.text_area :description %>
   </div>
   <br>
-  <div> 
+  <div>
     <%= form.label :code,'Código:' %>
     <%= form.text_field :code %>
   </div>
   <br>
-  <div> 
+  <div>
     <%= form.label :discount_rate, 'Desconto:' %>
     <%= form.number_field :discount_rate, in: 0..100 %>
   </div>
   <br>
-  <div> 
+  <div>
     <%= form.label :coupon_quantity,'Quantidade de cupons:' %>
     <%= form.number_field :coupon_quantity, min:1 %>
   </div>
   <br>
-  <div> 
+  <div>
     <%= form.label :expiration_date,'Data de término:' %>
     <%= form.date_field :expiration_date %>
   </div>

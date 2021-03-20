@@ -21,7 +21,7 @@ class PromotionsController < ApplicationController
       render :new
     end
   end
-  
+
   def edit
     @promotion = Promotion.find(params[:id])
   end
@@ -45,7 +45,12 @@ class PromotionsController < ApplicationController
     redirect_to @promotion
   end
 
-
+  def destroy
+    @promotion = Promotion.find(params[:id])
+    flash[:notice] = "Promoção #{@promotion.name} apagada com sucesso"
+    @promotion.destroy
+    redirect_to promotions_path
+  end
 
   private
   def promotion_params
@@ -56,5 +61,4 @@ class PromotionsController < ApplicationController
                                       :coupon_quantity, 
                                       :expiration_date)
   end
-
 end
