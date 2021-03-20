@@ -1,25 +1,51 @@
+<div>
+  <%= link_to "Voltar", promotions_path, class: 'btn' %>
+</div>
+<br>
 <%= flash[:notice] %>
-<%= link_to 'Voltar', promotions_path %>
 
 <h3><%= @promotion.name %></h3>
-<dl>
-  <dt>Descrição</dt>
-   <dd><%=@promotion.description%></dd>
-  <dt>Desconto <small>em porcentagem</small></dt>
-	<dd><%= number_to_percentage @promotion.discount_rate, separator:",", precision:2 %></dd>
-  <dt>Código</dt>
-   <dd><%= @promotion.code %></dd>
-  <dt>Data de Término</dt>
-   <dd><%= @promotion.expiration_date.strftime '%d/%m/%Y'%></dd>
-  <dt>Quantidade de cupons</dt>
-  <dd><%= @promotion.coupon_quantity %></dd>
-</dl>
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Descrição</th>
+      <th>Codigo</th>
+      <th>Desconto</th>
+      <th>Quantidade</th>
+      <th>Data de Expiração</th>
+    </tr>
+  </thead>
+  <tbody>
+     <tr class='data'>
+      <th><%= @promotion.description %></th>
+      <th><%= @promotion.code %></th>
+      <th><%= number_to_percentage @promotion.discount_rate, precision:2, separator:',' %></th>
+      <th><%= @promotion.coupon_quantity %></th>
+      <th><%= @promotion.expiration_date.strftime('%d/%m/%Y') %></th>
+    </tr> 
+  </tbody>
+</table>
+<br>
 
-<%  if @promotion.coupons.empty?%>
-  <%= link_to 'Gerar cupons', generate_coupons_promotion_path(@promotion), method: :post %>
-<% end%>
-
-<h3>Cupons Ativos</h3>
-<% @promotion.coupons.each do |coupon|%>
-  <p><%= coupon.code %></p>
+<% if @promotion.coupons.empty?%>
+    <%= link_to 'Gerar cupons', generate_coupons_promotion_path(@promotion), method: :post, class: 'btn' %>
 <% end %>
+
+  <% @promotion.coupons.each do |coupon| %>
+    <p><%= coupon.code %></p>
+  <% end %>
+
+
+  <!--<dl>
+  <dt>Descrição</dt>
+    <dd><%= @promotion.description %></dd>
+  <dt>Código</dt>
+    <dd><%= @promotion.code %></dd>
+  <dt>Desconto</dt>
+    <dd><%= number_to_percentage @promotion.discount_rate, precision:2, separator:',' %></dd>
+  <dt>Quantidade</dt>
+    <dd><%= @promotion.coupon_quantity %></dd>
+  <dt>Data de Expiração</dt>
+    <dd><%= @promotion.expiration_date.strftime('%d/%m/%Y') %></dd>
+  </dl>  -->
+
