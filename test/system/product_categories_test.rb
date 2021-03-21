@@ -3,6 +3,7 @@ require "application_system_test_case"
 class ProductCategoriesTest < ApplicationSystemTestCase
 
   test 'no product available' do
+
     visit root_path
     click_on 'Produtos'
 
@@ -22,6 +23,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'visit products and return to home page' do
+
     visit root_path
     click_on 'Produtos'
     click_on 'Voltar'
@@ -49,6 +51,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'create a new product' do
+
     visit product_categories_path
     click_on "Registrar produto"
     fill_in "Nome", with: 'Produto AntiFraude'
@@ -61,6 +64,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test "validates a new product: name/code can't be blank" do
+
     visit product_categories_path
     click_on "Registrar produto"
     fill_in "Nome", with: ''
