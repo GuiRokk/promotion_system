@@ -1,0 +1,18 @@
+<div>
+  <%= link_to 'Voltar', product_categories_path, class: 'btn' %>
+</div>
+<br>
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Codigo</th>
+    </tr>
+  </thead>
+  <tbody>
+     <tr class='data'>
+      <th><%= @product.name %></th>
+      <th><%= @product.code %></th>
+    </tr> 
+  </tbody>
+</table>
