@@ -22,6 +22,19 @@ class ProductCategoriesController < ApplicationController
     end
   end
 
+  def edit
+    @product = ProductCategory.find(params[:id])
+  end
+
+  def update
+    @product = ProductCategory.find(params[:id])
+    if @product.update(product_params)
+      flash[:notice] = 'Produto editado com sucesso'
+      redirect_to @product
+    else
+      render :edit
+    end
+  end
 
   private
 

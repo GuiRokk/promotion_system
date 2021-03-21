@@ -5,7 +5,7 @@
   <%= link_to 'Registrar uma promoção', new_promotion_path, class: 'btn'%>
 </div>
 
-<br><%= flash[:notice] %><br>
+<p><%= flash[:notice] %></p>
 
 <div>
   <% if @promotions.empty? %>

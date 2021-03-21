@@ -6,6 +6,6 @@ Rails.application.routes.draw do
     post 'generate_coupons', on: :member
   end
 
-  resources :product_categories, only: [:index, :show, :new, :create]
+  resources :product_categories, only: [:index, :show, :new, :create, :edit, :update]
 
 end

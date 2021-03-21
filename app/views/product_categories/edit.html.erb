@@ -1,0 +1,30 @@
+<div>
+  <%= link_to 'Voltar', root_path, class: 'btn' %>
+</div><br>
+
+<h2>Edição de Produto</h2>
+
+<% if @product.errors.any? %>
+    <h3>Encontramos alguns erros...</h3>
+    <ul>
+      <% @product.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+<% end %>
+
+<%= form_with model: @product do |form| %>
+  <div>
+    <%= form.label :name, 'Nome:' %>
+    <%= form.text_field :name %>
+  </div>
+  <br>
+  <div>
+    <%= form.label :code, 'Código:' %>
+    <%= form.text_field :code %>
+  </div>
+  <br>
+  <div>
+    <%= form.submit "Salvar mudanças", class: 'btn'%>
+  </div>
+<% end %>

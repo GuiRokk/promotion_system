@@ -6,7 +6,7 @@
     <% end %>
 </div>
 
-<br><%= flash[:notice] %>
+<p><%= flash[:notice] %></p>
 
 <h3><ins><%= "#{@promotion.name} - #{@promotion.description}" %><ins></h3>
 <table class='table'>
@@ -37,16 +37,3 @@
     <p><%= coupon.code %></p>
   <% end %>
 <% end %>
-
-  <!--<dl>
-  <dt>Descrição</dt>
-    <dd><%= @promotion.description %></dd>
-  <dt>Código</dt>
-    <dd><%= @promotion.code %></dd>
-  <dt>Desconto</dt>
-    <dd><%= number_to_percentage @promotion.discount_rate, precision:2, separator:',' %></dd>
-  <dt>Quantidade</dt>
-    <dd><%= @promotion.coupon_quantity %></dd>
-  <dt>Data de Expiração</dt>
-    <dd><%= @promotion.expiration_date.strftime('%d/%m/%Y') %></dd>
-  </dl>  -->
