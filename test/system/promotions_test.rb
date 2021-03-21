@@ -11,7 +11,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
     visit root_path
     click_on 'Promoções'
-
+    
     assert_text 'Natal'
     assert_text 'Promoção de Natal'
     assert_text '10,00%'
