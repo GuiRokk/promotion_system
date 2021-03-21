@@ -36,6 +36,14 @@ class ProductCategoriesController < ApplicationController
     end
   end
 
+
+  def destroy
+    @product = ProductCategory.find(params[:id])
+    @product.delete
+    flash[:notice] = "Produto #{@product.name} apagado com sucesso"
+    redirect_to product_categories_path
+  end
+
   private
 
   def product_params

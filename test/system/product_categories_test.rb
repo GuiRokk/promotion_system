@@ -126,4 +126,30 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     assert_text 'Encontramos alguns erros...'
     assert_text 'deve ser único'
   end
+
+
+  test 'delete the only product' do
+    product = ProductCategory.create!(name: 'Computador', code:'PRODCOMP')
+
+    visit product_category_path(product)
+    click_on 'Apagar produto'
+
+    assert_current_path product_categories_path
+    assert_text "Produto #{product.name} apagado com sucesso"
+    assert_no_link 'Computador'
+    assert_text 'Nenhum produto cadastrado'
+  end
+
+  test 'delete promotion with existing promotion' do
+    ProductCategory.create!(name: 'Produto AntiFraude', code:'ANTIFRA')
+    product = ProductCategory.create!(name: 'Computador', code:'PRODCOMP')
+
+    visit product_category_path(product)
+    click_on 'Apagar produto'
+
+    assert_current_path product_categories_path
+    assert_text "Produto #{product.name} apagado com sucesso"
+    assert_no_link 'Computador'
+    assert_link 'Produto AntiFraude'
+  end
 end
