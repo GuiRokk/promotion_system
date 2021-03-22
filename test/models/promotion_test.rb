@@ -36,4 +36,26 @@ class PromotionTest < ActiveSupport::TestCase
     assert_includes promotion.errors[:name], 'deve ser único'
   end
 
+  test 'generate coupons successfully' do
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033')
+
+    promotion.generate_coupons!
+
+    assert promotion.coupons.size == promotion.coupon_quantity
+  end
+
+  test "generate coupons can't be called twice" do
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033')
+
+    promotion.generate_coupons!
+    
+    assert_no_difference 'Coupon.count' do
+      promotion.generate_coupons!
+    end
+  end
+
 end

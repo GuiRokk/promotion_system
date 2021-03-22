@@ -1,11 +1,11 @@
 class PromotionsController < ApplicationController
-
+  before_action :fetch_promotion, only:[:show, :edit, :update, :destroy, :generate_coupons]
+  
   def index
     @promotions = Promotion.all
   end
 
   def show
-    fetch_promotion
   end
 
   def new
@@ -22,11 +22,9 @@ class PromotionsController < ApplicationController
   end
 
   def edit
-    fetch_promotion
   end
 
   def update
-    fetch_promotion
     if @promotion.update(promotion_params)
       flash_notice_message('promo_update')
       redirect_to_show
@@ -36,16 +34,12 @@ class PromotionsController < ApplicationController
   end
 
   def generate_coupons
-    fetch_promotion
-    (1..@promotion.coupon_quantity).each do |number|
-      Coupon.create(code: "#{@promotion.code}-#{'%04d' % number}", promotion: @promotion)
-    end
+    @promotion.generate_coupons!
     flash_notice_message('gen_coupon')
     redirect_to_show
   end
 
   def destroy
-    fetch_promotion
     flash_notice_message('promo_delete')
     @promotion.destroy
     redirect_to_index
