@@ -187,11 +187,11 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'deve ser único', count: 2
   end
 
-  test 'delete the only promotion' do
+  test 'delete promotion' do
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
-    
+
     visit promotion_path(promotion)
     click_on 'Apagar promoção'
 
@@ -217,5 +217,26 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text "Promoção #{promotion.name} apagada com sucesso"
     assert_no_link 'Natal'
     assert_link 'Cyber Monday'
+  end
+
+  test 'delete promotion with coupons' do
+    promotion1 = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
+                      expiration_date: '22/12/2033')
+
+    promotion2 = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+
+    visit promotion_path(promotion1)
+    click_on 'Gerar cupons'
+    visit promotion_path(promotion2)
+    click_on 'Gerar cupons'
+    click_on 'Apagar promoção'
+
+    assert_current_path promotions_path
+    assert_text "Promoção #{promotion2.name} apagada com sucesso"
+    assert_no_link 'Natal'
+    refute Coupon.exists?(promotion_id: promotion2.id)
   end
 end

@@ -45,7 +45,6 @@ class PromotionsController < ApplicationController
   end
 
   def destroy
-    action = 'promo_delete'
     fetch_promotion
     flash_notice_message('promo_delete')
     @promotion.destroy
