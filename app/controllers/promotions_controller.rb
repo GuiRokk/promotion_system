@@ -69,17 +69,4 @@ class PromotionsController < ApplicationController
   def redirect_to_index
     redirect_to promotions_path
   end
-
-  def flash_notice_message(action)
-    case action
-      when 'promo_update'
-        message = 'Promoção editada com sucesso'
-      when 'gen_coupon'
-        message = 'Cupons gerados com sucesso'
-      when 'promo_delete'
-        message = "Promoção #{@promotion.name} apagada com sucesso"
-    end
-    flash[:notice] = message
-  end
-
 end
