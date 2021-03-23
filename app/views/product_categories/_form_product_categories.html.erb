@@ -15,14 +15,14 @@
 
 <%= form_with model: product do |form| %>
   <div>
-    <%= form.label :name, 'Nome:' %>
+    <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
   <br>
   <div>
-    <%= form.label :code, 'Código:' %>
+    <%= form.label :code%>
     <%= form.text_field :code %>
   </div>
   <br>
-  <div><%= form.submit submit_title, class: 'btn'%></div>
+  <div><%= form.submit class: 'btn'%></div>
 <% end %>

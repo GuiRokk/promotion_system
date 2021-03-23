@@ -26,8 +26,9 @@ class PromotionsController < ApplicationController
 
   def update
     if @promotion.update(promotion_params)
-      flash_notice_message('promo_update')
+      flash[:notice] = t('.success')
       redirect_to_show
+      
     else
       render :edit
     end
@@ -35,13 +36,13 @@ class PromotionsController < ApplicationController
 
   def generate_coupons
     @promotion.generate_coupons!
-    flash_notice_message('gen_coupon')
+    flash[:notice] = t('.success')
     redirect_to_show
   end
 
   def destroy
-    flash_notice_message('promo_delete')
     @promotion.destroy
+    flash[:notice] = t('.success',promotion_name: @promotion.name)
     redirect_to_index
   end
 

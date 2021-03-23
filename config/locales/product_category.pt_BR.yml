@@ -1,0 +1,11 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      product_category:
+        one: Produto
+        other: Produtos
+    attributes:
+      product_category:
+        name: Nome
+        code: Código

@@ -12,25 +12,25 @@
 <table class='table'>
   <thead>
     <tr>
-      <th>Código</th>
-      <th>Desconto</th>
-      <th>Quantidade</th>
-      <th>Data de Expiração</th>
+      <th><%= Promotion.human_attribute_name(:code) %></th>
+      <th><%= Promotion.human_attribute_name(:discount_rate) %></th>
+      <th><%= Promotion.human_attribute_name(:coupon_quantity) %></th>
+      <th><%= Promotion.human_attribute_name(:expiration_date) %></th>
     </tr>
   </thead>
   <tbody>
      <tr class='data'>
       <th><%= @promotion.code %></th>
-      <th><%= number_to_percentage @promotion.discount_rate, precision:2, separator:',' %></th>
+      <th><%= number_to_percentage @promotion.discount_rate, precision:2 %></th>
       <th><%= @promotion.coupon_quantity %></th>
-      <th><%= @promotion.expiration_date.strftime('%d/%m/%Y') %></th>
+      <th><%= l(@promotion.expiration_date)%></th>   <%# I18n.localize => l %>
     </tr> 
   </tbody>
 </table>
 <br>
 
 <% if @promotion.coupons.empty?%>
-    <%= link_to 'Gerar cupons', generate_coupons_promotion_path(@promotion), method: :post, class: 'btn' %>
+    <%= link_to t('.generate_coupons'), generate_coupons_promotion_path(@promotion), method: :post, class: 'btn' %>
 <% else %>
   <h3>Cupons ativos</h3>
   <% @promotion.coupons.each do |coupon| %>

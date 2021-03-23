@@ -56,7 +56,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     click_on "Registrar produto"
     fill_in "Nome", with: 'Produto AntiFraude'
     fill_in "Código", with: 'ANTIFRA'
-    click_on 'Criar produto'
+    click_on 'Criar Produto'
 
     assert_current_path product_category_path(ProductCategory.last)
     assert_text 'Produto AntiFraude'
@@ -69,7 +69,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     click_on "Registrar produto"
     fill_in "Nome", with: ''
     fill_in "Código", with: ''
-    click_on 'Criar produto'
+    click_on 'Criar Produto'
 
     assert_text 'Encontramos alguns erros...'
     assert_text 'não pode ficar em branco', count: 2
@@ -82,7 +82,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     click_on "Registrar produto"
     fill_in "Nome", with: 'Produto AntiFraude'
     fill_in "Código", with: 'ANTIFRA'
-    click_on 'Criar produto'
+    click_on 'Criar Produto'
 
     assert_text 'Encontramos alguns erros...'
     assert_text 'deve ser único'
@@ -95,7 +95,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     click_on "Editar produto"
     fill_in "Nome", with: 'Novo Produto'
     fill_in "Código", with: 'NOVOPROD'
-    click_on "Salvar mudanças"
+    click_on "Atualizar Produto"
 
     assert_current_path product_category_path(product)
     assert_text 'Produto editado com sucesso'
@@ -110,7 +110,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     click_on "Editar produto"
     fill_in "Nome", with: ''
     fill_in "Código", with: ''
-    click_on "Salvar mudanças"
+    click_on "Atualizar Produto"
 
     assert_current_path product_category_path(product)
     assert_text 'Encontramos alguns erros...'
@@ -124,7 +124,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     visit product_category_path(product)
     click_on "Editar produto"
     fill_in "Código", with: 'ANTIFRA'
-    click_on "Salvar mudanças"
+    click_on "Atualizar Produto"
 
     assert_current_path product_category_path(product)
     assert_text 'Encontramos alguns erros...'
