@@ -11,7 +11,26 @@
   </head>
 
   <body class = 'body'>
-    <p><%= flash[:notice] %></p>
-    <%= yield %>
+   
+    <nav class='nav-menu'>
+      <%  if user_signed_in? %>
+        <ul>
+          <li><%= link_to  'Promoções', promotions_path, class: 'btn_nav'%></li>
+          <li><%= link_to  'Produtos', product_categories_path, class: 'btn_nav'%></li>
+          <li><%= link_to 'Sair', '#', class: 'btn_nav'%></li>
+        </ul>
+        <p class='user'><%= current_user.email%></p>
+      <% else %>
+        <ul>
+          <li><%= link_to 'Cadastrar', new_user_registration_path,class: 'btn_nav' %></li>
+          <li><%= link_to 'Entrar', new_user_session_path,class: 'btn_nav'%></li>
+        </ul>
+      <% end %>
+    </nav>
+
+    <p id='flash'><%= flash[:notice] %></p>
+    <div class='pag'>
+     <%= yield %>
+    </div>
   </body>
 </html>

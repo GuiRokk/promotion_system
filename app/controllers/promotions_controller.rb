@@ -1,5 +1,6 @@
 class PromotionsController < ApplicationController
-  before_action :fetch_promotion, only:[:show, :edit, :update, :destroy, :generate_coupons]
+  before_action :fetch_promotion, only:[:show, :edit, :update, :destroy, 
+                :generate_coupons]
   
   def index
     @promotions = Promotion.all

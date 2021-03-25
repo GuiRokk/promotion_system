@@ -239,4 +239,14 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_no_link 'Natal'
     refute Coupon.exists?(promotion_id: promotion2.id)
   end
+
+  test "don't view promotion link without login" do
+    visit root_path
+    
+    assert_no_link 'Promoções'
+  end
+
+  #test 'view promotions without login' do
+ # 
+ # end
 end
