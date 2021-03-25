@@ -77,6 +77,7 @@ margin: 0;
 .user{
   float: right;
   display: inline;
+  margin-right: 2em;
 
 }
 
@@ -93,4 +94,8 @@ margin: 0;
 
 .user{
   text-align: right;
+}
+
+.flash{
+  padding: 1em;
 }
