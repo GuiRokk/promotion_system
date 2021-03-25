@@ -1,6 +1,6 @@
 <div>
   <%= link_to "Voltar", promotions_path, class: 'btn' %>
-  <%= link_to 'Apagar promoção', promotion_path(@promotion), method: :delete, :data => {:confirm => 'Are you sure?'}, class: 'btn'%>
+  <%= link_to 'Apagar promoção', promotion_path(@promotion), method: :delete,class: 'btn'%>
     <% if @promotion.coupons.empty?%>
       <%= link_to 'Editar promoção', edit_promotion_path(@promotion), class:'btn' %>
     <% end %>

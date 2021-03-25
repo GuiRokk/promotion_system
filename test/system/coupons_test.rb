@@ -3,13 +3,15 @@ require "application_system_test_case"
 class CouponsTest < ApplicationSystemTestCase
 
   test 'disable a coupon' do
+    
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, 
-                                  coupon_quantity: 3,
+                                  coupon_quantity: 1,
                                   expiration_date: '22/12/2033')
     coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
 
+    login_user()
     visit promotion_path(promotion)
     within 'div#coupon-natal10-0001' do
       click_on 'Desativar'

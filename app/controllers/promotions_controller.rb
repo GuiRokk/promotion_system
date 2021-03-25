@@ -1,6 +1,6 @@
 class PromotionsController < ApplicationController
-  before_action :fetch_promotion, only:[:show, :edit, :update, :destroy, 
-                :generate_coupons]
+  before_action :authenticate_user!, only: %i[index show create generate_coupons]
+  before_action :fetch_promotion, only: [:show, :edit, :update, :destroy, :generate_coupons]
   
   def index
     @promotions = Promotion.all
@@ -29,7 +29,7 @@ class PromotionsController < ApplicationController
     if @promotion.update(promotion_params)
       flash[:notice] = t('.success')
       redirect_to_show
-      
+
     else
       render :edit
     end

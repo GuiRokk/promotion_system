@@ -3,7 +3,7 @@ pt-BR:
     models:
       user:
         one: Usuário
-        other: Usuários
-    attibutes:
-      user:
-        password: Senha
+    attributes:
+      email: Email
+      password: Senha
+    
