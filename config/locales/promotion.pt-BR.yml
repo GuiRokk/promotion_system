@@ -24,6 +24,7 @@ pt-BR:
     show:
         generate_coupons: Gerar cupons
         disable: Desativar
+        enable: Reativar
         active_coupons: Cupons ativos
     generate_coupons:
       success: Cupons gerados com sucesso

@@ -294,4 +294,31 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_current_path new_user_session_path
   end
+
+  test 'user reactivates coupon' do
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 2,
+                                  expiration_date: '22/12/2033')
+
+    login_user
+    visit promotion_path(promotion)
+    click_on 'Gerar cupons'
+    within 'div#coupon-natal10-0001' do
+      click_on "Desativar"
+    end
+    within 'div#coupon-natal10-0002' do
+      click_on "Desativar"
+    end
+    within 'div#coupon-natal10-0001' do
+      click_on "Reativar"
+    end
+
+    within 'div#coupon-natal10-0001' do
+      assert_link 'Desativar'
+      assert_no_link 'Reativar'
+    end
+    assert_text '(Ativo)', count:1
+    assert_text '(Desativado)',count:1
+  end
+
 end

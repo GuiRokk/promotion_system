@@ -49,6 +49,8 @@
       <p><%= coupon.code %> (<%= Coupon.human_attribute_name("status.#{coupon.status}")%>)</p>
       <% if coupon.active? %>
         <%= link_to t('.disable'), disable_coupon_path(coupon), method: :post,  class: 'btn' %>
+      <% else %>
+        <%= link_to t('.enable'), enable_coupon_path(coupon),method: :post, class:'btn' %>
       <% end %>
     </div>
   <% end %>
