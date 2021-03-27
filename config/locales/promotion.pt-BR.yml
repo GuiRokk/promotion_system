@@ -14,8 +14,17 @@ pt-BR:
         coupon_quantity: Quantidade de cupons
         expiration_date: Data de término
   promotions:
+    index:
+      empty: Nenhuma promoção cadastrada
+      active_promotions: Promoções ativas
+    new:
+      header_title: Cadastro de Promoção
+    edit:
+      header_title: Edição de Promoção
     show:
         generate_coupons: Gerar cupons
+        disable: Desativar
+        active_coupons: Cupons ativos
     generate_coupons:
       success: Cupons gerados com sucesso
     update:

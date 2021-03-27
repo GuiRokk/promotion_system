@@ -1,21 +1,20 @@
-<h1>Promoções</h1>
+<h1><%= Promotion.model_name.human(count:2)%></h1>
 <div>
-  <%= link_to 'Voltar', root_path , class: 'btn'%>
-  <%= link_to 'Registrar uma promoção', new_promotion_path, class: 'btn'%>
+  <%= link_to t('buttons.back'), root_path , class: 'btn'%>
+  <%= link_to t('buttons.register', model: @promotions.model.model_name.human), new_promotion_path, class: 'btn'%>
 </div>
-
 <div>
   <% if @promotions.empty? %>
-    <h3><p>Nenhuma promoção cadastrada</p></h3>
+    <h3><p><%= t('.empty') %></p></h3>
   <% else %>
-    <h3>Promoções ativas</h3>
+    <h3><%=t('.active_promotions') %></h3>
   <% end%>
 </div>
 <dl>
   <% @promotions.each do |promotion| %>
     <%=link_to promotion.name, promotion,class: 'btn'%>
-    <dt>Descrição: <%= promotion.description %></dt>
-    <dt>Desconto: <%= number_to_percentage promotion.discount_rate, precision:2, separator:',' %></dt>
+    <dt><%= Promotion.human_attribute_name(:description) %>: <%= promotion.description %></dt>
+    <dt><%= Promotion.human_attribute_name(:discount_rate) %>: <%= number_to_percentage promotion.discount_rate, precision:2, separator:',' %></dt>
     <br>
   <% end %>
 </dl>

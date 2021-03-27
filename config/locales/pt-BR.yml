@@ -1,0 +1,10 @@
+---
+  pt-BR:
+    buttons:
+      back: Voltar
+      register: Registrar %{model}
+      delete: Apagar %{model}
+      edit: Editar %{model}
+      register_user: Cadastrar
+      login: Entrar
+      logout: Sair

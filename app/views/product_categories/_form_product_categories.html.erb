@@ -1,11 +1,10 @@
 <div>
-  <%= link_to 'Voltar', @product, class: 'btn' %>
+  <%= link_to t('buttons.back'), @product, class: 'btn' %>
 </div><br>
 
 <h2><%= header_title %></h2>
 
 <% if @product.errors.any? %>
-    <h3>Encontramos alguns erros...</h3>
     <ul>
       <% @product.errors.each do |error| %>
         <li><%= error.full_message %></li>

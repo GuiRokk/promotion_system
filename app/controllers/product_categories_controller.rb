@@ -71,5 +71,4 @@ class ProductCategoriesController < ApplicationController
     end
     flash[:notice] = message
   end
-
 end

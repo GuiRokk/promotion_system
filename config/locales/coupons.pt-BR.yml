@@ -2,7 +2,9 @@
 pt-BR:
   activerecord:
     model:
-      coupon: Cupom
+      coupon:
+        one: Cupom
+        other: Cupons
     attributes:
       coupon:
         code: Código

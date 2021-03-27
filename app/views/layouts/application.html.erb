@@ -11,23 +11,22 @@
   </head>
 
   <body class = 'body'>
-   
+
     <nav class='nav-menu'>
       <%  if user_signed_in? %>
         <ul>
-          <li><%= link_to  'Promoções', promotions_path, class: 'btn_nav'%></li>
-          <li><%= link_to  'Produtos', product_categories_path, class: 'btn_nav'%></li>
-          <li><%= link_to 'Sair',  destroy_user_session_path, method: :delete, class: 'btn_nav'%></li>
+          <li><%= link_to  Promotion.model_name.human(count:2), promotions_path, class: 'btn_nav'%></li>
+          <li><%= link_to  ProductCategory.model_name.human(count:2), product_categories_path, class: 'btn_nav'%></li>
+          <li><%= link_to t('buttons.logout'),  destroy_user_session_path, method: :delete, class: 'btn_nav'%></li>
         </ul>
         <p class='user'><%= current_user.email%></p>
       <% else %>
         <ul>
-          <li><%= link_to 'Cadastrar', new_user_registration_path,class: 'btn_nav' %></li>
-          <li><%= link_to 'Entrar', new_user_session_path,class: 'btn_nav'%></li>
+          <li><%= link_to t('buttons.register_user'), new_user_registration_path,class: 'btn_nav' %></li>
+          <li><%= link_to t('buttons.login'), new_user_session_path,class: 'btn_nav'%></li>
         </ul>
       <% end %>
     </nav>
-
     <span id='flash' class ='flash'><%= flash[:notice] %></span>
     <div class='pag'>
      <%= yield %>

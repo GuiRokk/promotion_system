@@ -1,9 +1,18 @@
 <div>
-  <%= link_to "Voltar", promotions_path, class: 'btn' %>
-  <%= link_to 'Apagar promoção', promotion_path(@promotion), method: :delete,class: 'btn'%>
-    <% if @promotion.coupons.empty?%>
-      <%= link_to 'Editar promoção', edit_promotion_path(@promotion), class:'btn' %>
-    <% end %>
+  <%= link_to t('buttons.back'), promotions_path, class: 'btn' %>
+ 
+  <% active = []%>
+  <%  @promotion.coupons.each do |cupon| %>
+    <% active << cupon.status%>
+  <% end %>
+
+  <% unless active.any?('active') %>
+    <%= link_to t('buttons.delete', model: Promotion.model_name.human), promotion_path(@promotion), method: :delete,class: 'btn'%>
+  <% end%>
+
+  <% if @promotion.coupons.empty?%>
+    <%= link_to t('buttons.edit', model: Promotion.model_name.human), edit_promotion_path(@promotion), class:'btn' %>
+  <% end %>
 </div>
 
 <h3><ins><%= "#{@promotion.name} - #{@promotion.description}" %><ins></h3>
@@ -13,7 +22,7 @@
       <th><%= Promotion.human_attribute_name(:code) %></th>
       <th><%= Promotion.human_attribute_name(:discount_rate) %></th>
      
-      <th>  Quantidade </th>
+      <th><%= Promotion.human_attribute_name(:coupon_quantity) %> </th>
       <th><%= Promotion.human_attribute_name(:expiration_date) %></th>
     </tr>
   </thead>
@@ -29,9 +38,9 @@
 <br>
 
 <% if @promotion.coupons.empty?%>
-    <%= link_to t('.generate_coupons'), generate_coupons_promotion_path(@promotion), method: :post, class: 'btn' %>
-<% else %>
-  <h3>Cupons ativos</h3>
+    <%= link_to t('.generate_coupons'), generate_coupons_promotion_path(@promotion), method: :post, class: 'btn' %>  <%# I18n.translate => t%>
+<% else %>                                               <%# '.generate-coupons => lazy lookup, olhando dentro de promotions, dentro de show%>
+  <h3><%= t('.active_coupons') %></h3>
 <% end %>
 
   
@@ -39,7 +48,7 @@
     <div id="coupon-<%= coupon.code.parameterize %>">
       <p><%= coupon.code %> (<%= Coupon.human_attribute_name("status.#{coupon.status}")%>)</p>
       <% if coupon.active? %>
-        <%= link_to 'Desativar', disable_coupon_path(coupon), method: :post,  class: 'btn' %>
+        <%= link_to t('.disable'), disable_coupon_path(coupon), method: :post,  class: 'btn' %>
       <% end %>
     </div>
   <% end %>

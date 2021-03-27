@@ -25,4 +25,18 @@ class CouponsTest < ApplicationSystemTestCase
     assert_link 'Desativar', count: promotion.coupon_quantity - 1
   end
 
+
+  test 'coupon is created, exists' do
+    promotion = Promotion.create!(name: 'Natal',
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, 
+                                  coupon_quantity: 10,
+                                  expiration_date: '22/12/2033')
+
+    login_user()
+    visit promotion_path(promotion)
+    click_on 'Gerar cupons'
+    assert Coupon.any?
+    assert Coupon.count == promotion.coupon_quantity
+  end
 end

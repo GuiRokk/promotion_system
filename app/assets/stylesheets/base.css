@@ -14,7 +14,7 @@
  .btn{
   color: white;
   background-color:rgb(17, 65, 43);
-  border: 2px solid white;
+  border: 2px solid #FFFfFF;
   border-radius:0.15em;
   padding:0.4em 1.1em;
   margin:0 0.3em 0.3em 0;
@@ -45,7 +45,7 @@ div.field_with_errors {
 
 .nav{
 text-align: center;
-margin: 0;
+  margin: 0;
   padding: 0;
 }
 
@@ -57,28 +57,17 @@ margin: 0;
 
 .nav-menu ul{
   display: inline-block;
-  margin: 0;
+  margin: 1px 10px;
   padding: 0;
   list-style: none;
-
-
 }
 
 .nav-menu ul li{
-
-  color:white;
+  margin:2px 3px 0 0;
+  color:rgb(128, 126, 126);
   float: left;
   font-weight: bold;
   border: solid 2px white;
-}
-
-
-
-.user{
-  float: right;
-  display: inline;
-  margin-right: 2em;
-
 }
 
 .btn_nav{
@@ -93,8 +82,12 @@ margin: 0;
 }
 
 .user{
-  text-align: right;
+  float: right;
+  display: inline;
+  margin-right: 2em;
 }
+
+
 
 .flash{
   padding: 1em;

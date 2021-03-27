@@ -9,3 +9,11 @@ pt-BR:
       product_category:
         name: Nome
         code: Código
+  product_categories:
+    index:
+      empty: Nenhum produto cadastrado
+      active_products: Produtos registrados
+    new:
+      header_title: Cadastro de Produto
+    edit:
+      header_title: Edição de Produto

@@ -5,7 +5,7 @@ class Promotion < ApplicationRecord
             :expiration_date, presence: true
 
   validates :name, :code, uniqueness: true
-  
+
   validate :expiration_date_cannot_be_in_the_past
 
   def generate_coupons!
@@ -16,7 +16,6 @@ class Promotion < ApplicationRecord
     end
   end
 
-  # TODO: FAZER TESTE DESSE 
   def coupons?
     coupons.any?
   end
@@ -27,5 +26,4 @@ class Promotion < ApplicationRecord
     return unless expiration_date.present? && expiration_date < Date.current
       errors.add(:expiration_date, "não pode ser no passado")
   end
-
 end

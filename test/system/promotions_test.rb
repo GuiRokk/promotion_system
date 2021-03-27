@@ -1,7 +1,10 @@
 require 'application_system_test_case'
 
 class PromotionsTest < ApplicationSystemTestCase
-  test 'view promotions with login' do
+  
+  #todos os testes testando com o login efetuado
+
+  test 'view promotions' do
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
@@ -27,7 +30,7 @@ class PromotionsTest < ApplicationSystemTestCase
     Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
                       code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
                       expiration_date: '22/12/2033')
-                      login_user()
+    login_user()
     visit root_path
     click_on 'Promoções'
     click_on 'Cyber Monday'
@@ -61,11 +64,11 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_current_path root_path
   end
 
-  test 'view details and return to promotions page' do
+  test 'view details and return to promotions page ' do
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
-                      login_user()
+    login_user()
     visit root_path
     click_on 'Promoções'
     click_on 'Natal'
@@ -74,11 +77,11 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_current_path promotions_path
   end
 
-  test 'create promotion' do
+  test 'create promotion ' do
     login_user()
     visit root_path
     click_on 'Promoções'
-    click_on 'Registrar uma promoção'
+    click_on 'Registrar Promoção'
     fill_in 'Nome', with: 'Cyber Monday'
     fill_in 'Descrição', with: 'Promoção de Cyber Monday'
     fill_in 'Código', with: 'CYBER15'
@@ -97,17 +100,18 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_link 'Voltar'
   end
 
-  test 'create and attributes cannot be blank' do
+  test 'create attributes cannot be blank ' do
+    
     login_user()
     visit root_path
     click_on 'Promoções'
-    click_on 'Registrar uma promoção'
+    click_on 'Registrar Promoção'
     click_on 'Criar Promoção'
 
     assert_text 'não pode ficar em branco', count: 5
   end
 
-  test 'create and name/code must be unique' do
+  test 'create name/code must be unique ' do
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
@@ -115,7 +119,7 @@ class PromotionsTest < ApplicationSystemTestCase
     login_user()
     visit root_path
     click_on 'Promoções'
-    click_on 'Registrar uma promoção'
+    click_on 'Registrar Promoção'
     fill_in 'Nome', with: 'Natal'
     fill_in 'Código', with: 'NATAL10'
     click_on 'Criar Promoção'
@@ -123,7 +127,7 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'já está em uso', count: 2
   end
 
-  test "generate coupons for a promotion" do
+  test 'generate coupons for a promotion' do
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
@@ -139,7 +143,7 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text    'NATAL10-0001'
     assert_text    'NATAL10-0100'
     assert_no_text 'NATAL10-0101'
-    assert_no_link 'Editar promoção'
+    assert_no_link 'Editar Promoção'
   end
 
   test 'user edits a promotion' do
@@ -147,9 +151,9 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
 
-                                  login_user()
-                                  visit promotion_path(promotion)
-    click_on "Editar promoção"
+    login_user()
+    visit promotion_path(promotion)
+    click_on "Editar Promoção"
     fill_in 'Nome', with: 'Halloween'
     click_on 'Atualizar Promoção'
 
@@ -162,9 +166,10 @@ class PromotionsTest < ApplicationSystemTestCase
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
-                                  login_user()
+
+    login_user()
     visit promotion_path(promotion)
-    click_on "Editar promoção"
+    click_on "Editar Promoção"
     fill_in 'Nome', with: ''
     fill_in 'Descrição', with: ''
     fill_in 'Código', with: ''
@@ -184,9 +189,10 @@ class PromotionsTest < ApplicationSystemTestCase
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
-                                  login_user()
+
+    login_user()
     visit promotion_path(promotion)
-    click_on "Editar promoção"
+    click_on "Editar Promoção"
     fill_in 'Nome', with: 'Cyber Monday'
     fill_in 'Código', with: 'CYBER15'
 
@@ -194,14 +200,14 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'já está em uso', count: 2
   end
 
-  test 'delete promotion' do
+  test 'delete a promotion' do
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
 
     login_user()
     visit promotion_path(promotion)
-    click_on 'Apagar promoção'
+    click_on 'Apagar Promoção'
 
     assert_current_path promotions_path
     assert_text "Promoção #{promotion.name} apagada com sucesso"
@@ -209,7 +215,7 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_no_link 'Natal'
   end
 
-  test 'delete promotion with existing promotion' do
+  test 'delete with a remaining promotion ' do
     Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
                       code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
                       expiration_date: '22/12/2033')
@@ -217,10 +223,10 @@ class PromotionsTest < ApplicationSystemTestCase
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
-    
+
     login_user()
     visit promotion_path(promotion)
-    click_on 'Apagar promoção'
+    click_on 'Apagar Promoção'
 
     assert_current_path promotions_path
     assert_text "Promoção #{promotion.name} apagada com sucesso"
@@ -228,26 +234,40 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_link 'Cyber Monday'
   end
 
-  test 'delete promotion with coupons' do
-    promotion1 = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
+  test 'cannot delete promotion with active coupons ' do
+    promotion = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
                       code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
                       expiration_date: '22/12/2033')
 
-    promotion2 = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+    login_user()
+    visit promotion_path(promotion)
+    click_on 'Gerar cupons'
+
+    assert_current_path promotion_path(promotion)
+    assert_no_link 'Apagar'
+    assert_text '(Ativo)', count: promotion.coupon_quantity
+  end
+
+  test 'delete promotion with no active coupons ' do
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 2,
                                   expiration_date: '22/12/2033')
 
     login_user()
-    visit promotion_path(promotion1)
+    visit promotion_path(promotion)
     click_on 'Gerar cupons'
-    visit promotion_path(promotion2)
-    click_on 'Gerar cupons'
-    click_on 'Apagar promoção'
+    within 'div#coupon-natal10-0001' do
+      click_on "Desativar"
+    end
+    within 'div#coupon-natal10-0002' do
+      click_on "Desativar"
+    end
+    click_on 'Apagar Promoção'
 
     assert_current_path promotions_path
-    assert_text "Promoção #{promotion2.name} apagada com sucesso"
+    assert_text "Promoção #{promotion.name} apagada com sucesso"
     assert_no_link 'Natal'
-    refute Coupon.exists?(promotion_id: promotion2.id)
+    refute Coupon.exists?(promotion_id: promotion.id)
   end
 
   test "don't view promotion link without login" do
@@ -273,8 +293,4 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_current_path new_user_session_path
   end
-
-
-
-  #TODO: REVER ISSO TUDO AQUI
 end

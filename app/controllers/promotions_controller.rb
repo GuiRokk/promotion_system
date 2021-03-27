@@ -43,6 +43,7 @@ class PromotionsController < ApplicationController
 
   def destroy
     @promotion.destroy
+    
     flash[:notice] = t('.success',promotion_name: @promotion.name)
     redirect_to_index
   end
