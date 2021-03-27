@@ -4,7 +4,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
   test 'no product available with login' do
 
-    login_user()
+    login_user
     visit root_path
     click_on 'Produtos'
 
@@ -15,7 +15,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     ProductCategory.create!(name: 'Produto AntiFraude', code:'ANTIFRA')
     ProductCategory.create!(name: 'Produto Computador', code:'COMPUT')
 
-    login_user()
+    login_user
     visit root_path
     click_on 'Produtos'
     assert_text 'Produto AntiFraude'
@@ -26,7 +26,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
   test 'visit products and return to home page with login' do
 
-    login_user()
+    login_user
     visit root_path
     click_on 'Produtos'
     click_on 'Voltar'
@@ -36,7 +36,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   test 'view product details with login' do
     ProductCategory.create!(name: 'Produto AntiFraude', code:'ANTIFRA')
 
-    login_user()
+    login_user
     visit root_path
     click_on 'Produtos'
     click_on 'Produto AntiFraude'
@@ -48,7 +48,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   test 'visit products details and return to products index  with login' do
     product = ProductCategory.create!(name: 'Produto AntiFraude', code:'ANTIFRA')
 
-    login_user()
+    login_user
     visit product_category_path(product)
     click_on 'Voltar'
 
@@ -57,7 +57,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
   test 'create a new product with login' do
 
-    login_user()
+    login_user
     visit product_categories_path
     click_on "Registrar Produto"
     fill_in "Nome", with: 'Produto AntiFraude'
@@ -71,35 +71,32 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
   test "validates a new product: name/code can't be blank with login" do
 
-    login_user()
+    login_user
     visit product_categories_path
     click_on "Registrar Produto"
     fill_in "Nome", with: ''
     fill_in "Código", with: ''
     click_on 'Criar Produto'
 
-    assert_text 'Encontramos alguns erros...'
     assert_text 'não pode ficar em branco', count: 2
   end
 
   test "validates a new product: code must be unique  with login" do
     ProductCategory.create!(name: 'Produto Novo', code:'ANTIFRA')
 
-    login_user()
+    login_user
     visit product_categories_path
     click_on "Registrar Produto"
     fill_in "Nome", with: 'Produto AntiFraude'
     fill_in "Código", with: 'ANTIFRA'
     click_on 'Criar Produto'
-
-    assert_text 'Encontramos alguns erros...'
     assert_text 'deve ser único'
   end
 
   test 'edit a product with login' do
     product = ProductCategory.create!(name: 'Produto AntiFraude', code:'ANTIFRA')
 
-    login_user()
+    login_user
     visit product_category_path(product)
     click_on "Editar Produto"
     fill_in "Nome", with: 'Novo Produto'
@@ -115,7 +112,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   test "validates product edit: name/code can't be blank  with login" do
     product = ProductCategory.create!(name: 'Produto AntiFraude', code:'ANTIFRA')
 
-    login_user()
+    login_user
     visit product_category_path(product)
     click_on "Editar Produto"
     fill_in "Nome", with: ''
@@ -123,7 +120,6 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     click_on "Atualizar Produto"
 
     assert_current_path product_category_path(product)
-    assert_text 'Encontramos alguns erros...'
     assert_text 'não pode ficar em branco', count: 2
   end
 
@@ -131,14 +127,13 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     ProductCategory.create!(name: 'Produto AntiFraude', code:'ANTIFRA')
     product = ProductCategory.create!(name: 'Produto Novo', code:'NOVOPROD')
 
-    login_user()
+    login_user
     visit product_category_path(product)
     click_on "Editar Produto"
     fill_in "Código", with: 'ANTIFRA'
     click_on "Atualizar Produto"
 
     assert_current_path product_category_path(product)
-    assert_text 'Encontramos alguns erros...'
     assert_text 'deve ser único'
   end
 
@@ -146,7 +141,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   test 'delete the only product with login' do
     product = ProductCategory.create!(name: 'Computador', code:'PRODCOMP')
 
-    login_user()
+    login_user
     visit product_category_path(product)
     click_on 'Apagar Produto'
 
@@ -160,7 +155,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     ProductCategory.create!(name: 'Produto AntiFraude', code:'ANTIFRA')
     product = ProductCategory.create!(name: 'Computador', code:'PRODCOMP')
 
-    login_user()
+    login_user
     visit product_category_path(product)
     click_on 'Apagar Produto'
 

@@ -1,4 +1,5 @@
 require 'application_system_test_case'
+include LoginMacros
 
 class PromotionsTest < ApplicationSystemTestCase
   
@@ -12,7 +13,7 @@ class PromotionsTest < ApplicationSystemTestCase
                       code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
                       expiration_date: '22/12/2033')
 
-    login_user()
+    login_user
     visit root_path
     click_on 'Promoções'
     assert_text 'Natal'
@@ -30,7 +31,7 @@ class PromotionsTest < ApplicationSystemTestCase
     Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
                       code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
                       expiration_date: '22/12/2033')
-    login_user()
+    login_user
     visit root_path
     click_on 'Promoções'
     click_on 'Cyber Monday'
@@ -44,7 +45,7 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'no promotion are available' do
-    login_user()
+    login_user
     visit root_path
     click_on 'Promoções'
 
@@ -56,7 +57,7 @@ class PromotionsTest < ApplicationSystemTestCase
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
 
-    login_user()
+    login_user
     visit root_path
     click_on 'Promoções'
     click_on 'Voltar'
@@ -68,7 +69,7 @@ class PromotionsTest < ApplicationSystemTestCase
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
-    login_user()
+    login_user
     visit root_path
     click_on 'Promoções'
     click_on 'Natal'
@@ -78,7 +79,7 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'create promotion ' do
-    login_user()
+    login_user
     visit root_path
     click_on 'Promoções'
     click_on 'Registrar Promoção'
@@ -102,7 +103,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
   test 'create attributes cannot be blank ' do
     
-    login_user()
+    login_user
     visit root_path
     click_on 'Promoções'
     click_on 'Registrar Promoção'
@@ -116,7 +117,7 @@ class PromotionsTest < ApplicationSystemTestCase
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
     
-    login_user()
+    login_user
     visit root_path
     click_on 'Promoções'
     click_on 'Registrar Promoção'
@@ -133,7 +134,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
 
-    login_user()
+    login_user
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
 
@@ -151,7 +152,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
 
-    login_user()
+    login_user
     visit promotion_path(promotion)
     click_on "Editar Promoção"
     fill_in 'Nome', with: 'Halloween'
@@ -167,7 +168,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
 
-    login_user()
+    login_user
     visit promotion_path(promotion)
     click_on "Editar Promoção"
     fill_in 'Nome', with: ''
@@ -190,7 +191,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
 
-    login_user()
+    login_user
     visit promotion_path(promotion)
     click_on "Editar Promoção"
     fill_in 'Nome', with: 'Cyber Monday'
@@ -205,7 +206,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
 
-    login_user()
+    login_user
     visit promotion_path(promotion)
     click_on 'Apagar Promoção'
 
@@ -224,7 +225,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
 
-    login_user()
+    login_user
     visit promotion_path(promotion)
     click_on 'Apagar Promoção'
 
@@ -239,7 +240,7 @@ class PromotionsTest < ApplicationSystemTestCase
                       code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
                       expiration_date: '22/12/2033')
 
-    login_user()
+    login_user
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
 
@@ -253,7 +254,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 2,
                                   expiration_date: '22/12/2033')
 
-    login_user()
+    login_user
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
     within 'div#coupon-natal10-0001' do

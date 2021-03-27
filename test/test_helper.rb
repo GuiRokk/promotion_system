@@ -13,7 +13,8 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
   #Minitest.load_plugins
   #Minitest::PrideIO.pride!
-  def login_user(user = User.create!(email:'jane.doe@iugu.com.br', password:'123456'))
-    login_as user, scope: :user
-  end
+  
+  
+  Dir[Rails.root.join('test/support/**/*.rb')].each { |f| require f }
+  
 end
