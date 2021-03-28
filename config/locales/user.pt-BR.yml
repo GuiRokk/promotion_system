@@ -1,9 +1,12 @@
+---
 pt-BR:
   activerecord:
     models:
-      user:
-        one: Usuário
+      user: Usuário
     attributes:
-      email: Email
-      password: Senha
-    
+      user:
+        email: Email
+        password: Senha
+        password_confirmation: Confirmação de Senha
+        password_length: mínimo %{min_caracteres} caracteres
+        remember_me: Lembrar de mim
