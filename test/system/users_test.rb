@@ -3,7 +3,7 @@ include LoginMacros
 
 class PromotionsTest < ApplicationSystemTestCase
   test 'visit user profile' do
-    user = User.create!(email: 'test@iugu.com.br', password: '123123')
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
 
     visit root_path
     click_on 'Entrar'
