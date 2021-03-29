@@ -8,3 +8,4 @@
       register_user: Cadastrar
       login: Entrar
       logout: Sair
+      go_to: Ir para %{local}

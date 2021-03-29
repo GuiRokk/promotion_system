@@ -1,0 +1,31 @@
+<div>
+  <%= link_to t('buttons.back'), promotions_path , class: 'btn'%>
+</div>
+<h1>Resultado da busca</h1>
+
+  <% if @coupons.any? %>
+    <% @coupons.each do |coupon| %>
+     <table class='table'>
+          <thead>
+            <tr>
+              <th><%= Coupon.human_attribute_name(:code) %></th>
+              <th><%= Promotion.human_attribute_name(:name) %> <%=Promotion.model_name.human%> </th>
+              <th><%= Coupon.human_attribute_name(:status) %> </th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr class='data'>
+              <td><%= coupon.code %></td>
+              <td><%= coupon.promotion.name %></td>
+              <td><%= Coupon.human_attribute_name("status.#{coupon.status}")%></td>
+            </tr> 
+          </tbody>
+        </table>
+        <br>
+        <%= link_to t('buttons.go_to', local: Promotion.model_name.human), promotion_path(coupon.promotion) , class: 'btn' %>
+    <% end %>
+
+  
+
+  <% end %>

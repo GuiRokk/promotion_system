@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
+  
+
   resources :promotions, only: %i[index show new create edit update destroy] do    #literals => %i
     post 'generate_coupons', on: :member
   end
@@ -10,8 +12,9 @@ Rails.application.routes.draw do
 
   resources :coupons, only: [] do
     post 'disable', on: :member
-    post 'enable', on: :member
+    post  'enable', on: :member
   end
+  get 'search', to: 'coupons#search'
 
   devise_for :users, controllers: {registrations:  'registrations'}
   resources :users, only: [:show]

@@ -48,6 +48,7 @@ class PromotionsController < ApplicationController
     redirect_to_index
   end
 
+
   #--------------------------------------------------------
   private
 

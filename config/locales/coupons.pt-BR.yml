@@ -16,3 +16,4 @@ pt-BR:
       success: Cupom %{coupon_code} desativado com sucesso
     enable:
       success: Cupom %{coupon_code} reativado com sucesso
+  not_found: Cupom não encontrado
