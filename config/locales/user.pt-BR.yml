@@ -7,6 +7,8 @@ pt-BR:
       user:
         email: Email
         password: Senha
+        name: Nome
         password_confirmation: Confirmação de Senha
         password_length: mínimo %{min_caracteres} caracteres
         remember_me: Lembrar de mim
+        current_password: Senha atual

@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  devise_for :users
   root 'home#index'
 
   resources :promotions, only: %i[index show new create edit update destroy] do    #literals => %i
@@ -14,4 +13,6 @@ Rails.application.routes.draw do
     post 'enable', on: :member
   end
 
+  devise_for :users, controllers: {registrations:  'registrations'}
+  resources :users, only: [:show]
 end

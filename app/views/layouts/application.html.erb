@@ -15,11 +15,12 @@
     <nav class='nav-menu'>
       <%  if user_signed_in? %>
         <ul>
+          <li> <%= link_to 'Home', root_path, class: 'btn_nav' %></li>
           <li><%= link_to  Promotion.model_name.human(count:2), promotions_path, class: 'btn_nav'%></li>
           <li><%= link_to  ProductCategory.model_name.human(count:2), product_categories_path, class: 'btn_nav'%></li>
           <li><%= link_to t('buttons.logout'),  destroy_user_session_path, method: :delete, class: 'btn_nav'%></li>
         </ul>
-        <p class='user'><%= current_user.email%></p>
+        <p class='user'><%= link_to current_user.email, user_path(current_user), class: 'btn_nav' %></p>
       <% else %>
         <ul>
           <li><%= link_to t('buttons.register_user'), new_user_registration_path,class: 'btn_nav' %></li>

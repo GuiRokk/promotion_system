@@ -1,0 +1,12 @@
+<h2>Perfil do Usuário</h2>
+<div>
+  <%= link_to t('buttons.back'), root_path, class: 'btn' %>
+  <%= link_to t('buttons.edit', model: User.model_name.human), edit_user_registration_path, class: 'btn' %>
+</div>
+<div>
+  <h3><%=User.human_attribute_name(:name) %></h3><p><%=@user.name%></p>
+</div>
+<div>
+  <h3><%=User.human_attribute_name(:email)%></h3>
+  <%= @user.email %>
+</div>

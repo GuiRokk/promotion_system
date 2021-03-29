@@ -2,7 +2,7 @@ require 'application_system_test_case'
 
 class AuthenticationTest < ApplicationSystemTestCase
 
-  test 'user sign up' do
+  test 'user register' do
     
     visit root_path
     click_on "Cadastrar"
@@ -18,16 +18,11 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_link 'Sair'
     assert_no_link 'Cadastrar'
     assert_current_path root_path
-
-    #não logar e ir pra login?
-    #mandar email?
-    #validar a qualidade da senha?
-    #captcha não sou um robo?
   end
 
   test 'user sign in' do
     user = User.create!(email:'jane.doe@iugu.com.br', password:'password')
-    
+
     visit root_path
     click_on 'Entrar'
     fill_in 'Email', with: user.email
@@ -40,7 +35,6 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_current_path root_path
     assert_no_link 'Entrar'
   end
-
 
   test 'user sign out' do
     user = User.create!(email:'jane.doe@iugu.com.br', password:'password')
@@ -76,7 +70,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
   test 'user fails to register: email must be unique' do
     user = User.create!(email:'jane.doe@iugu.com.br', password:'password')
-    
+
     visit root_path
     click_on 'Cadastrar'
     fill_in 'Email', with: user.email
@@ -120,7 +114,38 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_text 'Confirmação de Senha não é igual a Senha'
   end
 
-  #TODO: TESTE FALHA AO LOGAR
-  #TODO: TESTE EDITAR USUARIO
-  #TODO: INCLUIR NAME NO USER
+  test 'user fails to login' do
+
+    visit root_path
+    click_on 'Entrar'
+    fill_in 'Email', with: ''
+    fill_in 'Senha', with: ''
+    click_on 'Login'
+
+    assert_text 'Email ou senha inválida'
+    assert_current_path new_user_session_path
+  end
+
+  test 'cannot validate register user with domain not @iugu.com.br' do
+
+    visit root_path
+    click_on "Cadastrar"
+    fill_in 'Email', with: 'jane.doe@gmail.com.br'
+    fill_in 'Senha', with: 'password'
+    fill_in 'Confirmação de Senha', with: 'password'
+    within 'form' do
+      click_on 'Cadastrar'
+    end
+
+    assert_text 'Não foi possível salvar'
+    assert_text 'Email não é válido'
+    assert_current_path user_registration_path
+
+  end
+
 end
+
+    #não logar e ir pra login?
+    #mandar email?
+    #validar a qualidade da senha?
+    #captcha não sou um robo?

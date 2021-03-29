@@ -102,7 +102,7 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'create attributes cannot be blank ' do
-    
+
     login_user
     visit root_path
     click_on 'Promoções'
