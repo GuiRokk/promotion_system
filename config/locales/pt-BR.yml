@@ -9,3 +9,8 @@
       login: Entrar
       logout: Sair
       go_to: Ir para %{local}
+      search: Buscar
+    headers:
+      app_name: Promotion System
+      welcome_message: Boas Vindas ao sistema de gestão de promoções
+      action: Ação

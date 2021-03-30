@@ -2,32 +2,26 @@
 <div>
   <%= link_to t('buttons.back'), root_path , class: 'btn'%>
   <%= link_to t('buttons.register', model: @promotions.model.model_name.human), new_promotion_path, class: 'btn'%>
-  
 </div>
+<br>
+<div id="search">
+  <%= form_with url: search_path, method: :get do |f| %>
+    <%= f.text_field :query %>
+    <%= f.submit t('buttons.search') %>
+  <% end %>
+</div>
+
 <div>
-  <% if @promotions.empty? %>
+  <% if Promotion.all.empty? %>
     <h3><p><%= t('.empty') %></p></h3>
   <% else %>
-    <h3><%=t('.active_promotions') %></h3>
-    <div id="search">
-      <%= form_with url: search_path, method: :get do %>
-        <%= label_tag :query, '' %>
-        <%= text_field_tag :query %>
-        <%= submit_tag 'Buscar por cupom' %>
-      <% end %>
-    </div>
+    <h3><%= Promotion.all.size %> <%=t('.active_promotions') %></h3>
   <% end%>
 </div>
+
 <dl>
   <% @promotions.each do |promotion| %>
-    <%=link_to promotion.name, promotion,class: 'btn'%> <%= Promotion.human_attribute_name(:code) %>: <%= promotion.code %> 
-    <dt><%= Promotion.human_attribute_name(:description) %>: <%= promotion.description %></dt>
-    <dt><%= Promotion.human_attribute_name(:discount_rate) %>: <%= number_to_percentage promotion.discount_rate, precision:2, separator:',' %></dt>
-    <dt></dt>
+    <%=link_to promotion.name, promotion,class: 'btn'%> 
     <br>
   <% end %>
 </dl>
-
-
-
-

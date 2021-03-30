@@ -10,15 +10,4 @@ class CouponsController < ApplicationController
     @coupon.active!
     redirect_to @coupon.promotion, notice: t('.success', coupon_code: @coupon.code)
   end
-
-  def search
-    @coupons = Coupon.where('code = ?',params[:query])  #busca exata
-    #@coupons = Coupon.where('code like ?',"%#{params[:name]}%") #usca genrérica
-    if @coupons.any?
-        @coupons
-    else
-        flash[:notice] = t('not_found')
-        redirect_to promotions_path
-    end
-  end
 end

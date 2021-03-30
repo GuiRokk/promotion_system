@@ -1,4 +1,5 @@
 class Promotion < ApplicationRecord
+  belongs_to :user
   has_many :coupons, dependent: :destroy
 
   validates :name,:code, :discount_rate, :coupon_quantity,
@@ -19,6 +20,11 @@ class Promotion < ApplicationRecord
   def coupons?
     coupons.any?
   end
+
+  def self.search(query)
+    where('name LIKE ?', "%#{query}%")#.limit(5)
+  end
+
 
   private
 

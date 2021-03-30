@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PromotionSystem</title>
+    <title><%= t('headers.app_name') %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -20,7 +20,7 @@
           <li><%= link_to  ProductCategory.model_name.human(count:2), product_categories_path, class: 'btn_nav'%></li>
           <li><%= link_to t('buttons.logout'),  destroy_user_session_path, method: :delete, class: 'btn_nav'%></li>
         </ul>
-        <p class='user'><%= link_to current_user.email, user_path(current_user), class: 'btn_nav' %></p>
+        <li class='user'><%= link_to current_user.email, user_path(current_user), class: 'btn_nav user' %></li>
       <% else %>
         <ul>
           <li><%= link_to t('buttons.register_user'), new_user_registration_path,class: 'btn_nav' %></li>

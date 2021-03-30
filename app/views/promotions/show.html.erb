@@ -1,12 +1,7 @@
 <div>
   <%= link_to t('buttons.back'), promotions_path, class: 'btn' %>
- 
-  <% active = []%>
-  <%  @promotion.coupons.each do |cupon| %>
-    <% active << cupon.status%>
-  <% end %>
 
-  <% unless active.any?('active') %>
+  <% if @promotion.coupons.active.empty? %>
     <%= link_to t('buttons.delete', model: Promotion.model_name.human), promotion_path(@promotion), method: :delete,class: 'btn'%>
   <% end%>
 
@@ -15,15 +10,14 @@
   <% end %>
 </div>
 
-<h3><ins><%= "#{@promotion.name} - #{@promotion.description}" %><ins></h3>
-<table class='table'>
+<h3><%= "#{@promotion.name} - #{@promotion.description}" %></h3>
+<table id='promotion_table'>
   <thead>
     <tr>
-      <th><%= Promotion.human_attribute_name(:code) %></th>
-      <th><%= Promotion.human_attribute_name(:discount_rate) %></th>
-     
-      <th><%= Promotion.human_attribute_name(:coupon_quantity) %> </th>
-      <th><%= Promotion.human_attribute_name(:expiration_date) %></th>
+      <th style='width: 70px'><%= Promotion.human_attribute_name(:code) %></th>
+      <th style='width: 70px'><%= Promotion.human_attribute_name(:discount_rate) %></th>
+      <th style='width: 70px'><%= Coupon.model_name.human(count:2)%> </th>
+      <th style='width: 100px'><%= Promotion.human_attribute_name(:expiration_date) %></th>
     </tr>
   </thead>
   <tbody>
@@ -43,14 +37,27 @@
   <h3><%= t('.active_coupons') %></h3>
 <% end %>
 
-  
+<table id='coupon_table'>
+    <thead>
+      <tr >
+        <th style='width: 100px'><%= Coupon.human_attribute_name(:code) %></th>
+        <th style='width: 100px'><%= Coupon.human_attribute_name(:status) %></th>
+        <th style='width: 100px'><%= t('headers.action') %></th>
+      </tr>
+    </thead>
   <% @promotion.coupons.each do |coupon| %>
-    <div id="coupon-<%= coupon.code.parameterize %>">
-      <p><%= coupon.code %> (<%= Coupon.human_attribute_name("status.#{coupon.status}")%>)</p>
-      <% if coupon.active? %>
-        <%= link_to t('.disable'), disable_coupon_path(coupon), method: :post,  class: 'btn' %>
-      <% else %>
-        <%= link_to t('.enable'), enable_coupon_path(coupon),method: :post, class:'btn' %>
-      <% end %>
-    </div>
+    <tbody>
+      <tr class='data'>
+        <td><%= coupon.code %></td>
+        <td ><%= Coupon.human_attribute_name("status.#{coupon.status}")%></td>
+        <td id="action-<%= coupon.code.parameterize%>">
+          <% if coupon.active? %>
+            <%= link_to t('.disable'), disable_coupon_path(coupon), method: :post,  class: 'btn' %>
+          <% else %>
+             <%= link_to t('.enable'), enable_coupon_path(coupon),method: :post, class:'btn' %>
+          <% end %>
+        </td>
+      </tr> 
+    </tbody>
   <% end %>
+ </table>

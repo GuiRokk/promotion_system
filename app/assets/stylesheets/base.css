@@ -84,6 +84,7 @@ text-align: center;
 .user{
   float: right;
   display: inline;
+  margin-top: 3px;
   margin-right: 2em;
 }
 

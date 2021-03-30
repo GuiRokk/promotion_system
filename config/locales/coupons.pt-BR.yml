@@ -1,7 +1,7 @@
 ---
 pt-BR:
   activerecord:
-    model:
+    models:
       coupon:
         one: Cupom
         other: Cupons

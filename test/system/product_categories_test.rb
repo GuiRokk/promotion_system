@@ -1,4 +1,5 @@
 require "application_system_test_case"
+include LoginMacros
 
 class ProductCategoriesTest < ApplicationSystemTestCase
 

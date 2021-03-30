@@ -5,6 +5,6 @@ class HomeTest < ApplicationSystemTestCase
     visit root_path
 
     assert_selector 'h1', text: 'Promotion System'
-    assert_selector 'h3', text: 'Boas vindas ao sistema de gestão de promoções'
+    assert_selector 'h3', text: 'Boas Vindas ao sistema de gestão de promoções'
   end
 end

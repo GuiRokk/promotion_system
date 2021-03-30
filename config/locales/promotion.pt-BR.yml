@@ -22,6 +22,7 @@ pt-BR:
     edit:
       header_title: Edição de Promoção
     show:
+        quantity: Quantidade
         generate_coupons: Gerar cupons
         disable: Desativar
         enable: Reativar

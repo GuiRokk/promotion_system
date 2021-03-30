@@ -1,7 +1,7 @@
 class PromotionsController < ApplicationController
   before_action :authenticate_user!, only: %i[index show create generate_coupons]
   before_action :fetch_promotion, only: [:show, :edit, :update, :destroy, :generate_coupons]
-  
+
   def index
     @promotions = Promotion.all
   end
@@ -14,7 +14,9 @@ class PromotionsController < ApplicationController
   end
 
   def create
-    @promotion = Promotion.new(promotion_params)
+    #@promotion = Promotion.new(promotion_params) 
+    #@promotion.user = current_user  #outra opção
+    @promotion = current_user.promotions.new(promotion_params)    #vem por causa do has_many
     if @promotion.save
       redirect_to_show
     else
@@ -29,7 +31,6 @@ class PromotionsController < ApplicationController
     if @promotion.update(promotion_params)
       flash[:notice] = t('.success')
       redirect_to_show
-
     else
       render :edit
     end
@@ -43,13 +44,11 @@ class PromotionsController < ApplicationController
 
   def destroy
     @promotion.destroy
-    
     flash[:notice] = t('.success',promotion_name: @promotion.name)
     redirect_to_index
   end
 
 
-  #--------------------------------------------------------
   private
 
   def promotion_params

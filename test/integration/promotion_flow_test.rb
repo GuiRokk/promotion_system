@@ -23,13 +23,13 @@ test 'cannot create a promotion without login' do
 
 
   test 'cannot create coupons without login' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
-    
-    
+                      expiration_date: '22/12/2033', user: user)
+
     post generate_coupons_promotion_path(promotion)
-    
+
     assert_redirected_to new_user_session_path
   end
 

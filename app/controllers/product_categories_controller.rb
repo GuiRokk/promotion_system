@@ -43,7 +43,7 @@ class ProductCategoriesController < ApplicationController
     redirect_to_index
   end
 
-  #--------------------------------------------------------
+
   private
 
   def product_params

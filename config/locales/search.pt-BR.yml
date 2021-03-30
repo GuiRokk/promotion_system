@@ -1,0 +1,5 @@
+---
+pt-BR:
+  search:
+    show:
+      header_title: Resultado Busca %{item}

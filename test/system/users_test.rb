@@ -67,11 +67,8 @@ class PromotionsTest < ApplicationSystemTestCase
   test 'edit user data with invalid email' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123')
 
+    login_user(user)
     visit root_path
-    click_on 'Entrar'
-    fill_in 'Email', with: user.email
-    fill_in 'Senha', with: user.password
-    click_on 'Login'
     click_on user.email
     click_on 'Editar Usuário'
     fill_in 'Email', with: 'test@gmail.com'
@@ -85,11 +82,8 @@ class PromotionsTest < ApplicationSystemTestCase
   test 'edit user data with blank current password' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123')
 
+    login_user(user)
     visit root_path
-    click_on 'Entrar'
-    fill_in 'Email', with: user.email
-    fill_in 'Senha', with: user.password
-    click_on 'Login'
     click_on user.email
     click_on 'Editar Usuário'
     fill_in 'Senha atual', with: ''
@@ -102,11 +96,8 @@ class PromotionsTest < ApplicationSystemTestCase
   test 'edit user data with invalid new password and password confirmation not matching' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123')
 
+    login_user(user)
     visit root_path
-    click_on 'Entrar'
-    fill_in 'Email', with: user.email
-    fill_in 'Senha', with: user.password
-    click_on 'Login'
     click_on user.email
     click_on 'Editar Usuário'
     fill_in 'Senha', with: '123'
