@@ -20,9 +20,9 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     visit root_path
     click_on 'Produtos'
     assert_text 'Produto AntiFraude'
-    assert_no_text 'ANTIFRA'
+    refute_text 'ANTIFRA'
     assert_text 'Produto Computador'
-    assert_no_text 'COMPUT'
+    refute_text 'COMPUT'
   end
 
   test 'visit products and return to home page with login' do
@@ -148,7 +148,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
     assert_current_path product_categories_path
     assert_text "Produto #{product.name} apagado com sucesso"
-    assert_no_link 'Computador'
+    refute_link 'Computador'
     assert_text 'Nenhum produto cadastrado'
   end
 
@@ -162,7 +162,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
     assert_current_path product_categories_path
     assert_text "Produto #{product.name} apagado com sucesso"
-    assert_no_link 'Computador'
+    refute_link 'Computador'
     assert_link 'Produto AntiFraude'
   end
 end

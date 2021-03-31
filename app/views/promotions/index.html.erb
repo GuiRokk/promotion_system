@@ -30,12 +30,16 @@
 
     <br>
     <% if promo_approved.any?%>
+    <div id='approved'>
       <%= render partial: 'promotion', locals:{promotions: promo_approved, 
                                                header_title:t('headers.approved')}%>
+    </div>
     <% end %>
 
     <% if promo_pending.any?%>
-      <%= render partial: 'promotion', locals:{promotions: promo_pending, 
+      <div id='pending'>
+        <%= render partial: 'promotion', locals:{promotions: promo_pending, 
                                                header_title:t('headers.pending')} %>
+      </div>
     <% end %>
 </div>

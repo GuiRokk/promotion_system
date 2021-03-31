@@ -3,7 +3,7 @@ require 'application_system_test_case'
 class AuthenticationTest < ApplicationSystemTestCase
 
   test 'user register' do
-    
+
     visit root_path
     click_on "Cadastrar"
     fill_in 'Email', with: 'jane.doe@iugu.com.br'
@@ -145,7 +145,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
 end
 
-    #não logar e ir pra login?
-    #mandar email?
-    #validar a qualidade da senha?
-    #captcha não sou um robo?
+    #TODO:não logar e ir pra login?
+    #TODO:mandar email?
+    #TODO:validar a qualidade da senha?
+    #TODO:captcha não sou um robo?

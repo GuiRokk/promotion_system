@@ -18,6 +18,7 @@ pt-BR:
       empty: Nenhuma promoção cadastrada
       active_promotions: Promoções ativas
       search_header: Busque por Promoção ou Cupom
+      show_all: Mostrando todos os itens
     new:
       header_title: Cadastro de Promoção
     edit:
@@ -29,7 +30,6 @@ pt-BR:
         enable: Reativar
         active_coupons: Cupons ativos
         approve: Aprovar
-        approved_by: Aprovado por
         are_you_sure?: 'Tem certeza? Essa operação não pode ser desfeita'
     generate_coupons:
       success: Cupons gerados com sucesso
@@ -37,6 +37,11 @@ pt-BR:
       success: Promoção editada com sucesso
     destroy:
       success: Promoção %{promotion_name} apagada com sucesso
+    approve:
+      success: Promoção aprovada com sucesso
+      failure: Não pode ser aprovado pelo criador da promoção
   headers:
     approved: Promoções aprovadas
     pending: Aguardando aprovação
+    approved_by: Aprovado por
+    created_by: Criado por

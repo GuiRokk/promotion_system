@@ -24,14 +24,14 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view approved promotions' do
-    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    user = login_user
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user: user)
     Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
                       code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
                       expiration_date: '22/12/2033', user: user)
-    approver = login_user
+    approver = login_approver
     PromotionApproval.create!(promotion: promotion, user: approver)
 
     visit root_path
@@ -100,7 +100,7 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'create promotion ' do
-    login_user
+    user = login_user
     visit root_path
     click_on 'Promoções'
     click_on 'Registrar Promoção'
@@ -120,6 +120,9 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text '22/12/2033'
     assert_text '90'
     assert_link 'Voltar'
+    assert_link 'Aprovar'
+    assert_text "Criado por: #{user.email}"
+    refute_text "Aprovado por:"
   end
 
   test 'create attributes cannot be blank ' do
@@ -150,23 +153,23 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'generate coupons for a promotion' do
-    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    user = login_user
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033', user: user)
-    approver = login_user
+    approver = login_approver
     PromotionApproval.create!(promotion: promotion, user: approver)
 
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
 
     assert_text 'Cupons gerados com sucesso'
-    assert_no_link 'Gerar cupons'
-    assert_no_text 'NATAL10-0000'
+    refute_link 'Gerar cupons'
+    refute_text 'NATAL10-0000'
     assert_text    'NATAL10-0001'
     assert_text    'NATAL10-0100'
-    assert_no_text 'NATAL10-0101'
-    assert_no_link 'Editar Promoção'
+    refute_text 'NATAL10-0101'
+    refute_link 'Editar Promoção'
   end
 
   test 'user edits a promotion' do
@@ -182,7 +185,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_text 'Promoção editada com sucesso'
     assert_text 'Halloween'
-    assert_no_link 'Natal'
+    refute_link 'Natal'
   end
 
   test 'user edits a promotion with blanks' do
@@ -235,10 +238,10 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_current_path promotions_path
     assert_text "Promoção #{promotion.name} apagada com sucesso"
     assert_text "Nenhuma promoção cadastrada"
-    assert_no_link 'Natal'
+    refute_link 'Natal'
   end
 
-  test 'delete with a remaining promotion ' do
+  test 'delete promotion with a remaining promotion' do
     user = login_user
     Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
                       code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
@@ -253,32 +256,32 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_current_path promotions_path
     assert_text "Promoção #{promotion.name} apagada com sucesso"
-    assert_no_link 'Natal'
+    refute_link 'Natal'
     assert_link 'Cyber Monday'
   end
 
   test 'cannot delete promotion with active coupons ' do
-    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    user = login_user
     promotion = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
                       code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
                       expiration_date: '22/12/2033', user: user)
-    approver = login_user
+    approver = login_approver
     PromotionApproval.create!(promotion: promotion, user: approver)
 
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
 
     assert_current_path promotion_path(promotion)
-    assert_no_link 'Apagar'
+    refute_link 'Apagar'
     assert_text 'Ativo', count: promotion.coupon_quantity
   end
 
   test 'delete promotion with no active coupons ' do
-    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    user = login_user
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 2,
                                   expiration_date: '22/12/2033', user: user)
-    approver = login_user
+    approver = login_approver
     PromotionApproval.create!(promotion: promotion, user: approver)
 
     visit promotion_path(promotion)
@@ -293,7 +296,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_current_path promotions_path
     assert_text "Promoção #{promotion.name} apagada com sucesso"
-    assert_no_link 'Natal'
+    refute_link 'Natal'
     refute Coupon.exists?(promotion_id: promotion.id)
   end
 
@@ -301,7 +304,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
     visit root_path
 
-    assert_no_link 'Promoções'
+    refute_link 'Promoções'
   end
 
   test "don't view promotions using route without login" do
@@ -323,11 +326,11 @@ class PromotionsTest < ApplicationSystemTestCase
 end
 
   test 'user reactivates coupon' do
-    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    user = login_user
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 2,
                                   expiration_date: '22/12/2033', user: user)
-    approver = login_user
+    approver = login_approver
     PromotionApproval.create!(promotion: promotion, user: approver)
 
     visit promotion_path(promotion)
@@ -344,13 +347,13 @@ end
 
     within 'td#action-natal10-0001' do
       assert_link 'Desativar'
-      assert_no_link 'Reativar'
+      refute_link 'Reativar'
   end
     assert_text 'Ativo', count:1
     assert_text 'Desativado',count:1
   end
 
-  test 'search promotion by term and finds results' do
+  test 'search promotion by term and find results' do
     user = login_user
     xmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
@@ -371,25 +374,58 @@ end
 
     assert_text xmas.name
     assert_text christmassy.name
-    assert_no_text cyber.name
+    refute_text cyber.name
+  end
+
+  test 'search and find no results' do
+    user = login_user
+    xmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033', user: user)
+
+    visit root_path
+    click_on 'Promoções'
+    query = 'gggggg'
+    within 'form' do
+      fill_in 'query', with: query
+      click_on 'Buscar'
+    end
+
+    assert_text 'Item buscado não encontrado'
+    assert_current_path promotions_path(query: query)
+    refute_text xmas.name
   end
 
   test 'user approves promotion' do
-    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    user = login_user
     promotion = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
                       code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
                       expiration_date: '22/12/2033', user: user)
 
-    approver = login_user
+    approver = login_approver
     visit promotion_path(promotion)
     accept_confirm {click_on 'Aprovar'}
 
     assert_text 'Promoção aprovada com sucesso'
-    assert_text "Aprovada por: #{approver.email}"
+    assert_text "Criado por: #{user.email}"
+    assert_text "Aprovado por: #{approver.email}"
     assert_link 'Gerar cupons'
     refute_link "Aprovar"
   end
 
+  test 'promotion creator cannot approve promotion' do
+    user = login_user
+    promotion = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
+                      expiration_date: '22/12/2033', user: user)
+
+    visit promotion_path(promotion)
+    accept_confirm {click_on 'Aprovar'}
+    assert_text 'Não pode ser aprovado pelo criador da promoção'
+    refute_text 'Promoção aprovada com sucesso'
+    refute_text "Aprovado por: #{user.email}"
+    refute_link 'Gerar cupons'
+  end
 
   test 'can delete only an approved promotion' do
     user = login_user
@@ -404,17 +440,34 @@ end
     assert_current_path promotions_path
     assert_text "Promoção #{promotion.name} apagada com sucesso"
     assert_text "Nenhuma promoção cadastrada"
-    assert_no_link 'Natal'
+    refute_link 'Natal'
   end
 
+  test 'view approved and pending approval promotions' do
+    user = login_user
+    promotion1 = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
+                      expiration_date: '22/12/2033', user: user)
 
+    promotion2 = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033', user: user)
+    approver = login_approver
+    PromotionApproval.create!(promotion: promotion1, user: approver)
 
+    visit promotions_path
 
+    within 'div#approved' do
+      assert_text 'Promoções aprovadas'
+      assert_link promotion1.name
+      refute_link promotion2.name
+    end
+    within 'div#pending' do
+      assert_text 'Aguardando aprovação'
+      assert_link promotion2.name
+      refute_link promotion1.name
+    end
+  end
 
-   #TODO: NAO ENCONTRA NADA
-   #TODO: VISIT PAGINA SEM ESTAR LOGADO
-   #TODO: SEARCH_PROMOTIONS (q: 'natal')
    #TODO: ORGANIZAR ESSES TESTES
-   #TODO: SÓ PODE EDITAR QUEM CRIOU A PROMOÇÃO ?
-   #TODO: TESTAR NO INDEX PROMOÇÕES APRODAS DE AGUARDANDO APROVAÇÃO
 end

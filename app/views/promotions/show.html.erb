@@ -62,7 +62,12 @@
     </table>
   <% end %>
   <br>
-  <p><%= t('.approved_by') %>: <%= @promotion.promotion_approval.user.email %></p>
 <% else%>
   <%= link_to t('.approve'), approve_promotion_path(@promotion),method: :post, data: {confirm: t('.are_you_sure?')}, class: 'btn'%>
 <% end %>
+<div>
+<p><%= t('headers.created_by') %>: <%= @promotion.user.email %></p>
+<% if @promotion.approved?%>
+  <p><%= t('headers.approved_by') %>: <%= @promotion.promotion_approval.user.email %></p>
+<% end %>
+</div>

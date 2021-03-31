@@ -1,5 +1,3 @@
-
-
 <div>
   <%= link_to t('buttons.back'), promotions_path , class: 'btn'%>
 </div>
@@ -12,6 +10,8 @@
       <th><%= Coupon.human_attribute_name(:code) %></th>
       <th><%= Promotion.human_attribute_name(:name) %> <%=Promotion.model_name.human%> </th>
       <th><%= Coupon.human_attribute_name(:status) %> </th>
+      <th><%= t('headers.created_by') %></th>
+      <th><%= t('headers.approved_by') %></th>
       <th style='width: 150px'><%= t('headers.action') %></th>
     </tr>
   </thead>
@@ -20,6 +20,8 @@
       <td><%= @coupon.code %></td>
       <td><%= @coupon.promotion.name %></td>
       <td><%= Coupon.human_attribute_name("status.#{@coupon.status}")%></td>
+      <td><%= @coupon.promotion.user.email %></td>
+      <td><%= @coupon.promotion.promotion_approval.user.email %></td>
       <td><%= link_to t('buttons.go_to', local: Promotion.model_name.human), 
                                           promotion_path(@coupon.promotion), class: 'btn' %></td>
     </tr> 

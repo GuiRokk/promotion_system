@@ -6,7 +6,7 @@ class SearchController < ApplicationController
     if @promotions.empty?
       if @coupon.nil?
         flash[:notice] = t('.failed')
-        redirect_to promotions_path
+        redirect_to promotions_path(query: params[:query])
       else
         @coupon
       end

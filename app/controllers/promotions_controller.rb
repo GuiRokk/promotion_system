@@ -3,7 +3,8 @@ class PromotionsController < ApplicationController
   before_action :fetch_promotion, only: [:show, :edit, :update, :destroy, :generate_coupons, :approve]
 
   def index
-    if params[:query].nil?
+    if params[:query] == ''
+      flash.now[:notice] = t('.show_all')
       @promotions = Promotion.all
     else
       @promotions = Promotion.search(params[:query])
@@ -54,8 +55,12 @@ class PromotionsController < ApplicationController
   end
 
   def approve
-    PromotionApproval.create!(promotion: @promotion, user: current_user)
-    redirect_to @promotion, notice: 'Promoção aprovada com sucesso'
+    if current_user != @promotion.user
+      PromotionApproval.create!(promotion: @promotion, user: current_user)
+      redirect_to @promotion, notice: t('.success')
+    else
+      redirect_to @promotion, notice: t('.failure')
+    end
   end
 
   private
