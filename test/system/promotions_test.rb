@@ -16,6 +16,28 @@ class PromotionsTest < ApplicationSystemTestCase
 
     visit root_path
     click_on 'Promoções'
+    assert_text 'Aguardando aprovação'
+    refute_text 'Promoções aprovadas'
+    assert_text 'Natal'
+    assert_text 'Cyber Monday'
+    refute_text 'Carnaval'
+  end
+
+  test 'view approved promotions' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033', user: user)
+    Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
+                      expiration_date: '22/12/2033', user: user)
+    approver = login_user
+    PromotionApproval.create!(promotion: promotion, user: approver)
+
+    visit root_path
+    click_on 'Promoções'
+    assert_text 'Aguardando aprovação'
+    assert_text 'Promoções aprovadas'
     assert_text 'Natal'
     assert_text 'Cyber Monday'
     refute_text 'Carnaval'
@@ -128,10 +150,12 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'generate coupons for a promotion' do
-    user = login_user
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                   expiration_date: '22/12/2033', user: user)
+    approver = login_user
+    PromotionApproval.create!(promotion: promotion, user: approver)
 
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
@@ -234,12 +258,13 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'cannot delete promotion with active coupons ' do
-    user =  login_user
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     promotion = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
                       code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
                       expiration_date: '22/12/2033', user: user)
+    approver = login_user
+    PromotionApproval.create!(promotion: promotion, user: approver)
 
-   
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
 
@@ -249,10 +274,12 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'delete promotion with no active coupons ' do
-    user = login_user
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 2,
                                   expiration_date: '22/12/2033', user: user)
+    approver = login_user
+    PromotionApproval.create!(promotion: promotion, user: approver)
 
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
@@ -296,10 +323,12 @@ class PromotionsTest < ApplicationSystemTestCase
 end
 
   test 'user reactivates coupon' do
-    user = login_user
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 2,
                                   expiration_date: '22/12/2033', user: user)
+    approver = login_user
+    PromotionApproval.create!(promotion: promotion, user: approver)
 
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
@@ -345,8 +374,47 @@ end
     assert_no_text cyber.name
   end
 
+  test 'user approves promotion' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    promotion = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
+                      expiration_date: '22/12/2033', user: user)
+
+    approver = login_user
+    visit promotion_path(promotion)
+    accept_confirm {click_on 'Aprovar'}
+
+    assert_text 'Promoção aprovada com sucesso'
+    assert_text "Aprovada por: #{approver.email}"
+    assert_link 'Gerar cupons'
+    refute_link "Aprovar"
+  end
+
+
+  test 'can delete only an approved promotion' do
+    user = login_user
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033', user: user)
+
+    visit promotion_path(promotion)
+    accept_confirm {click_on 'Aprovar'}
+    click_on 'Apagar Promoção'
+
+    assert_current_path promotions_path
+    assert_text "Promoção #{promotion.name} apagada com sucesso"
+    assert_text "Nenhuma promoção cadastrada"
+    assert_no_link 'Natal'
+  end
+
+
+
+
 
    #TODO: NAO ENCONTRA NADA
    #TODO: VISIT PAGINA SEM ESTAR LOGADO
    #TODO: SEARCH_PROMOTIONS (q: 'natal')
+   #TODO: ORGANIZAR ESSES TESTES
+   #TODO: SÓ PODE EDITAR QUEM CRIOU A PROMOÇÃO ?
+   #TODO: TESTAR NO INDEX PROMOÇÕES APRODAS DE AGUARDANDO APROVAÇÃO
 end

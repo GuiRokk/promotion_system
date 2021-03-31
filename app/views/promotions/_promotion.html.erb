@@ -1,0 +1,5 @@
+<em><ins><%= header_title %></ins></em>
+
+<% promotions.each do |promotion| %>
+  <p><%= link_to promotion.name, promotion, class: 'btn' %></p>
+<% end %>

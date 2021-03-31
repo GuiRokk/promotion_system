@@ -30,34 +30,39 @@
   </tbody>
 </table>
 <br>
+<% if @promotion.approved?%>
+  <% if @promotion.coupons.empty?%>
+      <%= link_to t('.generate_coupons'), generate_coupons_promotion_path(@promotion), method: :post, class: 'btn' %>  <%# I18n.translate => t%>
+  <% else %>                                               <%# '.generate-coupons => lazy lookup, olhando dentro de promotions, dentro de show%>
+    <h3><%= t('.active_coupons') %></h3>
 
-<% if @promotion.coupons.empty?%>
-    <%= link_to t('.generate_coupons'), generate_coupons_promotion_path(@promotion), method: :post, class: 'btn' %>  <%# I18n.translate => t%>
-<% else %>                                               <%# '.generate-coupons => lazy lookup, olhando dentro de promotions, dentro de show%>
-  <h3><%= t('.active_coupons') %></h3>
-<% end %>
-
-<table id='coupon_table'>
-    <thead>
-      <tr >
-        <th style='width: 100px'><%= Coupon.human_attribute_name(:code) %></th>
-        <th style='width: 100px'><%= Coupon.human_attribute_name(:status) %></th>
-        <th style='width: 100px'><%= t('headers.action') %></th>
-      </tr>
-    </thead>
-  <% @promotion.coupons.each do |coupon| %>
-    <tbody>
-      <tr class='data'>
-        <td><%= coupon.code %></td>
-        <td ><%= Coupon.human_attribute_name("status.#{coupon.status}")%></td>
-        <td id="action-<%= coupon.code.parameterize%>">
-          <% if coupon.active? %>
-            <%= link_to t('.disable'), disable_coupon_path(coupon), method: :post,  class: 'btn' %>
-          <% else %>
-             <%= link_to t('.enable'), enable_coupon_path(coupon),method: :post, class:'btn' %>
-          <% end %>
-        </td>
-      </tr> 
-    </tbody>
+    <table id='coupon_table'>
+        <thead>
+          <tr >
+            <th style='width: 100px'><%= Coupon.human_attribute_name(:code) %></th>
+            <th style='width: 100px'><%= Coupon.human_attribute_name(:status) %></th>
+            <th style='width: 100px'><%= t('headers.action') %></th>
+          </tr>
+        </thead>
+      <% @promotion.coupons.each do |coupon| %>
+        <tbody>
+          <tr class='data'>
+            <td><%= coupon.code %></td>
+            <td ><%= Coupon.human_attribute_name("status.#{coupon.status}")%></td>
+            <td id="action-<%= coupon.code.parameterize%>">
+              <% if coupon.active? %>
+                <%= link_to t('.disable'), disable_coupon_path(coupon), method: :post,  class: 'btn' %>
+              <% else %>
+                <%= link_to t('.enable'), enable_coupon_path(coupon),method: :post, class:'btn' %>
+              <% end %>
+            </td>
+          </tr> 
+        </tbody>
+      <% end %>
+    </table>
   <% end %>
- </table>
+  <br>
+  <p><%= t('.approved_by') %>: <%= @promotion.promotion_approval.user.email %></p>
+<% else%>
+  <%= link_to t('.approve'), approve_promotion_path(@promotion),method: :post, data: {confirm: t('.are_you_sure?')}, class: 'btn'%>
+<% end %>

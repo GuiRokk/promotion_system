@@ -3,11 +3,15 @@ include LoginMacros
 
 class CouponsTest < ApplicationSystemTestCase
 
+  #testes rodando com login efetuado e promoções aprovadas
+
   test 'coupon is created, exists' do
-    user = login_user
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user:user)
+    approver = login_user
+    PromotionApproval.create!(promotion: promotion, user: approver)
 
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
@@ -16,15 +20,16 @@ class CouponsTest < ApplicationSystemTestCase
   end
 
   test 'disable a coupon' do
-    user = login_user
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, 
                                   coupon_quantity: 1,
                                   expiration_date: '22/12/2033', user: user)
+    approver = login_user
+    PromotionApproval.create!(promotion: promotion, user: approver)
     coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
 
-    
     visit promotion_path(promotion)
     within 'td#action-natal10-0001' do
       click_on 'Desativar'
@@ -43,10 +48,10 @@ class CouponsTest < ApplicationSystemTestCase
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user:user)
-    
+    approver = login_user
+    PromotionApproval.create!(promotion: promotion, user: approver)
     coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
 
-    login_user
     visit promotion_path(promotion)
     within 'td#action-natal10-0001' do
       click_on 'Desativar'

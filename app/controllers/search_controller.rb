@@ -5,13 +5,13 @@ class SearchController < ApplicationController
 
     if @promotions.empty?
       if @coupon.nil?
-        flash[:notice] = 'Item buscado não encontrado'
+        flash[:notice] = t('.failed')
         redirect_to promotions_path
       else
         @coupon
       end
     else
-      render 'promotions/index'
+      redirect_to promotions_path(query: params[:query])
     end
   end
 end

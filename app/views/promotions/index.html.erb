@@ -1,27 +1,41 @@
 <h1><%= Promotion.model_name.human(count:2)%></h1>
 <div>
   <%= link_to t('buttons.back'), root_path , class: 'btn'%>
-  <%= link_to t('buttons.register', model: @promotions.model.model_name.human), new_promotion_path, class: 'btn'%>
+  <%= link_to t('buttons.register', model: Promotion.model_name.human), new_promotion_path, class: 'btn'%>
 </div>
 <br>
 <div id="search">
+  <%= t('.search_header') %>
   <%= form_with url: search_path, method: :get do |f| %>
+    <br>
     <%= f.text_field :query %>
-    <%= f.submit t('buttons.search') %>
+    <%= f.submit t('buttons.search'), class: 'btn' %>
   <% end %>
 </div>
 
 <div>
   <% if Promotion.all.empty? %>
     <h3><p><%= t('.empty') %></p></h3>
-  <% else %>
-    <h3><%= Promotion.all.size %> <%=t('.active_promotions') %></h3>
-  <% end%>
-</div>
-
-<dl>
-  <% @promotions.each do |promotion| %>
-    <%=link_to promotion.name, promotion,class: 'btn'%> 
-    <br>
   <% end %>
-</dl>
+
+    <% promo_approved = [] %>
+    <% promo_pending = [] %>
+    <% @promotions.each do |promotion| %>
+      <% if promotion.approved? %>
+        <% promo_approved << promotion%>
+      <% else %>
+        <% promo_pending << promotion%>
+      <% end %>
+    <% end %>
+
+    <br>
+    <% if promo_approved.any?%>
+      <%= render partial: 'promotion', locals:{promotions: promo_approved, 
+                                               header_title:t('headers.approved')}%>
+    <% end %>
+
+    <% if promo_pending.any?%>
+      <%= render partial: 'promotion', locals:{promotions: promo_pending, 
+                                               header_title:t('headers.pending')} %>
+    <% end %>
+</div>

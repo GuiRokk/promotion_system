@@ -1,6 +1,7 @@
 class Promotion < ApplicationRecord
   belongs_to :user
   has_many :coupons, dependent: :destroy
+  has_one :promotion_approval, dependent: :destroy
 
   validates :name,:code, :discount_rate, :coupon_quantity,
             :expiration_date, presence: true
@@ -25,6 +26,9 @@ class Promotion < ApplicationRecord
     where('name LIKE ?', "%#{query}%")#.limit(5)
   end
 
+  def approved?
+    promotion_approval.present?
+  end
 
   private
 

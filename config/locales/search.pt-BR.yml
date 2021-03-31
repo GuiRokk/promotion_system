@@ -3,3 +3,4 @@ pt-BR:
   search:
     show:
       header_title: Resultado Busca %{item}
+      failed: Item buscado não encontrado
