@@ -1,7 +1,8 @@
 class Promotion < ApplicationRecord
   belongs_to :user
-  has_many :coupons, dependent: :destroy
+  has_many :coupons, dependent: :destroy #restrict_with_error
   has_one :promotion_approval, dependent: :destroy
+  has_one :approver, through: :promotion_approval, source: :user
 
   validates :name,:code, :discount_rate, :coupon_quantity,
             :expiration_date, presence: true
@@ -30,6 +31,10 @@ class Promotion < ApplicationRecord
     promotion_approval.present?
   end
 
+  #def can_approve?(current_user)
+  #  user != current_user
+  #end
+  #TODO: ver aqui tbm
   private
 
   def expiration_date_cannot_be_in_the_past

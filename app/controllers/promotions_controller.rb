@@ -1,5 +1,5 @@
 class PromotionsController < ApplicationController
-  before_action :authenticate_user!, only: %i[index show create generate_coupons]
+  before_action :authenticate_user!, only: %i[index show create generate_coupons approve]
   before_action :fetch_promotion, only: [:show, :edit, :update, :destroy, :generate_coupons, :approve]
 
   def index
@@ -56,12 +56,14 @@ class PromotionsController < ApplicationController
 
   def approve
     if current_user != @promotion.user
-      PromotionApproval.create!(promotion: @promotion, user: current_user)
+      #PromotionApproval.create!(promotion: @promotion, user: current_user)
+      current_user.promotion_approvals.create!(promotion: @promotion)
       redirect_to @promotion, notice: t('.success')
     else
       redirect_to @promotion, notice: t('.failure')
     end
   end
+
 
   private
 
@@ -85,4 +87,13 @@ class PromotionsController < ApplicationController
   def redirect_to_index
     redirect_to promotions_path
   end
+
+
+
+ #def can_be_approved
+ # redirect_to @promotion
+ # alert: 'nao pode fazer isso'
+ #end
+
+ #TODO: VER ISSO AQUI
 end

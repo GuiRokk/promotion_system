@@ -149,3 +149,4 @@ end
     #TODO:mandar email?
     #TODO:validar a qualidade da senha?
     #TODO:captcha não sou um robo?
+    #TODO: recuperar senha?

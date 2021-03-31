@@ -114,4 +114,22 @@ class CouponsTest < ApplicationSystemTestCase
     assert_text 'Item buscado não encontrado'
     assert_current_path promotions_path(query: query)
   end
+
+  test 'cannot created coupon without login' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033', user:user)
+    approver = User.create!(email: 'peter@iugu.com.br', password: '123123', name: 'Peter')
+    PromotionApproval.create!(promotion: promotion, user: approver)
+
+    visit promotion_path(promotion)
+    refute_link 'Gerar cupons'
+    assert_current_path new_user_session_path
+  end
+
+
+
+
+
 end
