@@ -32,22 +32,4 @@ class ApprovePromotionsTest < ApplicationSystemTestCase
     refute_text "Aprovado por: #{user.email}"
     refute_link 'Gerar cupons'
   end
-
-  #TODO: não ter isso?
-  test 'can delete only an approved promotion' do
-    user = login_user
-    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                  expiration_date: '22/12/2033', user: user)
-
-    visit promotion_path(promotion)
-    accept_confirm {click_on 'Aprovar'}
-    click_on 'Apagar Promoção'
-
-    assert_current_path promotions_path
-    assert_text "Promoção #{promotion.name} apagada com sucesso"
-    assert_text "Nenhuma promoção cadastrada"
-    refute_link 'Natal'
-  end
-
 end
