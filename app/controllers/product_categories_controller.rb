@@ -1,11 +1,12 @@
 class ProductCategoriesController < ApplicationController
+before_action :fetch_product, only: %i[show edit update destroy]
+before_action :authenticate_user!
 
   def index
     @products = ProductCategory.all
   end
 
   def show
-    fetch_product
   end
 
   def new
@@ -23,13 +24,11 @@ class ProductCategoriesController < ApplicationController
   end
 
   def edit
-    fetch_product
   end
 
   def update
-    fetch_product
     if @product.update(product_params)
-      flash_notice_message('update')
+      flash[:notice] = t('.success')
       redirect_to_show
     else
       render :edit
@@ -37,12 +36,10 @@ class ProductCategoriesController < ApplicationController
   end
 
   def destroy
-    fetch_product
     @product.delete
-    flash_notice_message('delete')
+    flash[:notice] = t('.success', name: @product.name)
     redirect_to_index
   end
-
 
   private
 
@@ -60,15 +57,5 @@ class ProductCategoriesController < ApplicationController
 
   def redirect_to_index
     redirect_to product_categories_path
-  end
-
-  def flash_notice_message(action)
-    case action
-      when 'update'
-        message = 'Produto editado com sucesso'
-      when 'delete'
-        message = "Produto #{@product.name} apagado com sucesso"
-    end
-    flash[:notice] = message
   end
 end

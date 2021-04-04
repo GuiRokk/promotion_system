@@ -17,3 +17,7 @@ pt-BR:
       header_title: Cadastro de Produto
     edit:
       header_title: Edição de Produto
+    update:
+      success: Produto editado com sucesso
+    destroy:
+      success: Produto %{name} apagado com sucesso

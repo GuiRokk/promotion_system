@@ -4,7 +4,6 @@ include LoginMacros
 class PromotionFlowTest < ActionDispatch::IntegrationTest
   test 'can create a promotion' do
     user = login_user
-
     post promotions_path, params: {promotion:{name: 'Natal', description: 'Promoção de Natal', 
                                             code:'NATAL10',discount_rate: 15, coupon_quantity: 5, 
                                             expiration_date: '22/12/2033', user:user}}
@@ -12,17 +11,15 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
     assert_redirected_to promotion_path(Promotion.last)
     follow_redirect!
     assert_select 'h3', 'Natal - Promoção de Natal'
-
   end
 
-test 'cannot create a promotion without login' do
+  test 'cannot create a promotion without login' do
     post promotions_path, params: {promotion:{name: 'Natal', description: 'Promoção de Natal', 
                                             code:'NATAL10',discount_rate: 15, coupon_quantity: 5, 
                                             expiration_date: '22/12/2033'}}
 
     assert_redirected_to new_user_session_path
   end
-
 
   test 'cannot generate coupons without login' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
@@ -111,7 +108,6 @@ test 'cannot create a promotion without login' do
     assert Promotion.last
   end
 
-
   test 'new' do
     login_user
     get new_promotion_path
@@ -120,7 +116,6 @@ test 'cannot create a promotion without login' do
 
   test 'cannot get to new without login' do
     get new_promotion_path
-    assert_response :found
     assert_redirected_to new_user_session_path
   end
 end
