@@ -2,12 +2,6 @@ require "test_helper"
 include LoginMacros
 
 class ProductCategoryFlowTest < ActionDispatch::IntegrationTest
-  test 'view index' do
-    login_user
-    get product_categories_path
-    assert_response :ok
-  end
-
   test 'cannot view index without login' do
     get product_categories_path
     assert_redirected_to new_user_session_path
@@ -25,12 +19,6 @@ class ProductCategoryFlowTest < ActionDispatch::IntegrationTest
     ProductCategory.create!(name: 'Calça', code: 'ROUPA')
     get product_category_path(ProductCategory.last)
     assert_redirected_to new_user_session_path
-  end
-
-  test 'view new' do
-    login_user
-    get new_product_category_path
-    assert_response :ok
   end
 
   test 'cannot view new without login' do

@@ -2,6 +2,46 @@ require "test_helper"
 include LoginMacros
 
 class PromotionFlowTest < ActionDispatch::IntegrationTest
+  test 'cannot view index without login' do
+    get promotions_path
+    assert_redirected_to new_user_session_path
+  end
+
+  test 'cannot view show without login' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL10', 
+    discount_rate: 10,coupon_quantity: 100, expiration_date: '22/12/2033', 
+    user: user)
+
+    get promotion_path(promotion)
+    assert_redirected_to new_user_session_path
+  end
+
+  test 'edit a promotion' do
+    user = login_user
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL10', 
+    discount_rate: 10,coupon_quantity: 100, expiration_date: '22/12/2033', 
+    user: user)
+
+    get edit_promotion_path(promotion)
+    assert_response :ok
+  end
+
+  test 'cannot edit without login' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL10', 
+    discount_rate: 10,coupon_quantity: 100, expiration_date: '22/12/2033', 
+    user: user)
+
+    get edit_promotion_path(promotion)
+    assert_redirected_to new_user_session_path
+  end
+
+  test 'cannot get to new without login' do
+    get new_promotion_path
+    assert_redirected_to new_user_session_path
+  end
+
   test 'can create a promotion' do
     user = login_user
     post promotions_path, params: {promotion:{name: 'Natal', description: 'Promoção de Natal', 
@@ -19,40 +59,6 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
                                             expiration_date: '22/12/2033'}}
 
     assert_redirected_to new_user_session_path
-  end
-
-  test 'cannot generate coupons without login' do
-    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
-    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
-
-    post generate_coupons_promotion_path(promotion)
-    assert_redirected_to new_user_session_path
-  end
-
-  test 'promotion creator cannot approve promotion by route' do
-    user = login_user
-    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                    code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                     expiration_date: '22/12/2033', user: user)
-
-    post approve_promotion_path(promotion)
-
-    assert_redirected_to promotion_path(promotion)
-    refute promotion.reload.approved?
-    assert_equal 'Não pode ser aprovado pelo criador da promoção', flash[:notice]
-  end
-
-  test 'cannot approve without login' do
-    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
-    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                    code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                     expiration_date: '22/12/2033', user: user)
-
-    post approve_promotion_path(promotion)
-    assert_redirected_to new_user_session_path
-    refute promotion.reload.approved?
   end
 
   test 'can update a promotion' do
@@ -108,14 +114,60 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
     assert Promotion.last
   end
 
-  test 'new' do
-    login_user
-    get new_promotion_path
-    assert_response :ok
+  test 'cannot generate coupons without login' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033', user: user)
+
+    post generate_coupons_promotion_path(promotion)
+    assert_redirected_to new_user_session_path
   end
 
-  test 'cannot get to new without login' do
-    get new_promotion_path
+  test 'promotion creator cannot approve promotion by route' do
+    user = login_user
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                    code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                     expiration_date: '22/12/2033', user: user)
+
+    post approve_promotion_path(promotion)
+
+    assert_redirected_to promotion_path(promotion)
+    refute promotion.reload.approved?
+    assert_equal 'Não pode ser aprovado pelo criador da promoção', flash[:notice]
+  end
+
+  test 'cannot approve without login' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                    code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                     expiration_date: '22/12/2033', user: user)
+
+    post approve_promotion_path(promotion)
     assert_redirected_to new_user_session_path
+    refute promotion.reload.approved?
+  end
+
+  test 'cannot approve if creator' do
+    user = login_user
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                    code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                     expiration_date: '22/12/2033', user: user)
+
+    post approve_promotion_path(promotion)
+    refute promotion.reload.approved?
+    assert_equal 'Não pode ser aprovado pelo criador da promoção', flash[:notice]
+  end
+
+  test 'approver login to approve promotion' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                    code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                     expiration_date: '22/12/2033', user: user)
+
+    login_approver
+    post approve_promotion_path(promotion)
+    assert promotion.reload.approved?
+    assert_equal 'Promoção aprovada com sucesso', flash[:notice]
   end
 end

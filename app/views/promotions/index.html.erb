@@ -18,17 +18,9 @@
     <h3><p><%= t('.empty') %></p></h3>
   <% end %>
 
-    <% promo_approved = [] %>
-    <% promo_pending = [] %>
-    <% @promotions.each do |promotion| %>
-      <% if promotion.approved? %>
-        <% promo_approved << promotion%>
-      <% else %>
-        <% promo_pending << promotion%>
-      <% end %>
-    <% end %>
+    <% promo_approved = Promotion.joins(:promotion_approval)%>
+    <% promo_pending = Promotion.all - promo_approved%>
 
-  <%#TODO: FAZ ISSO NUMA QUERY??  15:27 DA AULA%>
     <br>
     <% if promo_approved.any?%>
     <div id='approved'>
