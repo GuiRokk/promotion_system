@@ -31,10 +31,18 @@ class Promotion < ApplicationRecord
     promotion_approval.present?
   end
 
-  #def can_approve?(current_user)
-  #  user != current_user
-  #end
-  #TODO: ver aqui tbm
+  def self.approved
+    joins(:promotion_approval)
+  end
+
+  def self.pending
+    all - approved
+  end
+
+  def can_approve?(current_user)
+    user != current_user
+  end
+
   private
 
   def expiration_date_cannot_be_in_the_past

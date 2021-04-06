@@ -11,21 +11,22 @@
   </head>
 
   <body class = 'body'>
-
     <nav class='nav-menu'>
       <%  if user_signed_in? %>
-        <ul>
-          <li> <%= link_to 'Home', root_path, class: 'btn_nav' %></li>
-          <li><%= link_to  Promotion.model_name.human(count:2), promotions_path, class: 'btn_nav'%></li>
-          <li><%= link_to  ProductCategory.model_name.human(count:2), product_categories_path, class: 'btn_nav'%></li>
-          <li><%= link_to t('buttons.logout'),  destroy_user_session_path, method: :delete, class: 'btn_nav'%></li>
-        </ul>
-        <li class='user'><%= link_to current_user.email, user_path(current_user), class: 'btn_nav user' %></li>
-      <% else %>
-        <ul>
-          <li><%= link_to t('buttons.register_user'), new_user_registration_path,class: 'btn_nav' %></li>
-          <li><%= link_to t('buttons.login'), new_user_session_path,class: 'btn_nav'%></li>
-        </ul>
+          <ul>
+            <li> <%= link_to 'Home', root_path, class: 'btn_nav' %></li>
+            <li><%= link_to  Promotion.model_name.human(count:2), promotions_path, class: 'btn_nav'%></li>
+            <li><%= link_to  ProductCategory.model_name.human(count:2), product_categories_path, class: 'btn_nav'%></li>
+            <li><%= link_to t('buttons.logout'),  destroy_user_session_path, method: :delete, class: 'btn_nav'%></li>
+          </ul>
+          <ul class = user>
+            <li><%= link_to current_user.email, user_path(current_user), class: 'btn_nav user' %></li>
+          </ul> 
+       <% else %>
+          <ul>
+            <li><%= link_to t('buttons.register_user'), new_user_registration_path,class: 'btn_nav' %></li>
+            <li><%= link_to t('buttons.login'), new_user_session_path,class: 'btn_nav'%></li>
+          </ul>
       <% end %>
     </nav>
     <em id='flash' class ='flash'><%= flash[:notice] %></em>

@@ -27,7 +27,9 @@ class AuthenticationTest < ApplicationSystemTestCase
     click_on 'Entrar'
     fill_in 'Email', with: user.email
     fill_in 'Senha', with: user.password
-    click_on 'Login'
+    within 'form' do
+      click_on 'Entrar'
+    end
 
     assert_text "Login efetuado com sucesso"
     assert_text user.email
@@ -43,7 +45,9 @@ class AuthenticationTest < ApplicationSystemTestCase
     click_on 'Entrar'
     fill_in 'Email', with: user.email
     fill_in 'Senha', with: user.password
-    click_on 'Login'
+    within 'form' do
+      click_on 'Entrar'
+    end
     click_on 'Sair'
 
     assert_current_path root_path
@@ -120,7 +124,9 @@ class AuthenticationTest < ApplicationSystemTestCase
     click_on 'Entrar'
     fill_in 'Email', with: ''
     fill_in 'Senha', with: ''
-    click_on 'Login'
+    within 'form' do
+      click_on 'Entrar'
+    end
 
     assert_text 'Email ou senha inválida'
     assert_current_path new_user_session_path
@@ -144,7 +150,6 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
 end
-
     #TODO:não logar e ir pra login?
     #TODO:mandar email?
     #TODO:validar a qualidade da senha?

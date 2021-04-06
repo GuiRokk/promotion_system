@@ -4,9 +4,8 @@
   <%= link_to t('buttons.edit', model: User.model_name.human), edit_user_registration_path, class: 'btn' %>
 </div>
 <div>
-  <h3><%=User.human_attribute_name(:name) %></h3><p><%=@user.name%></p>
+  <h3><%="#{User.human_attribute_name(:name)}: #{@user.name}"%></h3>
 </div>
 <div>
-  <h3><%=User.human_attribute_name(:email)%></h3>
-  <%= @user.email %>
+  <h3><%="#{User.human_attribute_name(:email)}: #{@user.email}"%></h3>
 </div>

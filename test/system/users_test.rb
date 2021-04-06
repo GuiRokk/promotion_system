@@ -9,7 +9,9 @@ class PromotionsTest < ApplicationSystemTestCase
     click_on 'Entrar'
     fill_in 'Email', with: user.email
     fill_in 'Senha', with: user.password
-    click_on 'Login'
+    within 'form' do
+      click_on 'Entrar'
+    end
     click_on user.email
 
     assert_current_path user_path(user)
@@ -29,7 +31,9 @@ class PromotionsTest < ApplicationSystemTestCase
     click_on 'Entrar'
     fill_in 'Email', with: user.email
     fill_in 'Senha', with: user.password
-    click_on 'Login'
+    within 'form' do
+      click_on 'Entrar'
+    end
     click_on user.email
     click_on 'Editar Usuário'
     fill_in 'Nome', with: 'Peter Parker'
@@ -45,15 +49,16 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'peter_parker@iugu.com.br'
   end
 
-
   test 'edit user data with blank email' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: '')
-     
+
     visit root_path
     click_on 'Entrar'
     fill_in 'Email', with: user.email
     fill_in 'Senha', with: user.password
-    click_on 'Login'
+    within 'form' do
+      click_on 'Entrar'
+    end
     click_on user.email
     click_on 'Editar Usuário'
     fill_in 'Email', with: ''

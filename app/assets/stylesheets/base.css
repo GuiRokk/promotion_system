@@ -2,9 +2,10 @@
  .body{
   margin: inherit;
   padding:0;
-  background-color: rgb(17, 65, 43);
+  min-height: 100vh;
+  background: repeating-linear-gradient(165deg, #1792be 0%, #182848 50%,  #41db96 100%);
   color:white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Roboto;
  }
 
  .pag{
@@ -13,7 +14,7 @@
 
  .btn{
   color: white;
-  background-color:rgb(17, 65, 43);
+  background-color: rgba(0, 0, 0, 0);
   border: 2px solid #FFFfFF;
   border-radius:0.15em;
   padding:0.4em 1.1em;
@@ -26,7 +27,7 @@
  }
 
  .btn:hover{
-  background-color:red;
+  background: linear-gradient(165deg, #ff5f6d 0%, #ffc371 100%);
  }
 
  table, th, td {
@@ -45,13 +46,13 @@ div.field_with_errors {
 }
 
 .nav{
-text-align: center;
+  text-align: center;
   margin: 0;
   padding: 0;
 }
 
 .nav-menu{
-  background:black;
+  background-color: rgba(255, 255, 255, 0.3);
   margin: 0;
   padding: 0.1em;
 }
@@ -65,10 +66,11 @@ text-align: center;
 
 .nav-menu ul li{
   margin:2px 3px 0 0;
-  color:rgb(128, 126, 126);
+  color: white;
   float: left;
+  font-variant-caps: normal;
   font-weight: bold;
-  border: solid 2px white;
+  border: solid 3px white;
 }
 
 .btn_nav{
@@ -79,18 +81,94 @@ text-align: center;
 }
 
 .btn_nav:hover{
-  background: red;
+  background: linear-gradient(165deg, #ff5f6d 0%, #ffc371 100%);
 }
 
-.user{
+.user {
   float: right;
-  display: inline;
-  margin-top: 3px;
-  margin-right: 2em;
+  top:10px;
+  border: solid px white;
 }
 
 
-
-.flash{
-  padding: 1em;
+.devise-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  padding: 40px;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(0,0,0,.3);
+  border-radius: 10px;
+  font-size: 13px;
 }
+.devise-box h1 {
+  margin: 0 0 30px;
+  padding: 0;
+  color:white;
+  text-align: center;
+}
+
+.devise-box .user-box input {
+  width: 100%;
+  padding: 5px 0;
+  font-size: 15px;
+  color:white;
+  margin-bottom: 10px;
+  border: none;
+  border-bottom: 1px solid white;
+  outline: none;
+  background: transparent;
+}
+.devise-box .user-box label {
+  width: 100%;
+  padding: 5px 0;
+  font-size: 13px;
+  color:white;
+  margin-bottom: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+
+}
+
+::placeholder{
+  top:0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 13px;
+  color: white;
+  pointer-events: none;
+  opacity: .7;
+}
+
+.devise-box .actions {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0);
+  border: 2px solid #FFFfFF;
+  border-radius:0.15em;
+}
+
+.actions:hover{
+  background: linear-gradient(165deg, #ff5f6d 0%, #ffc371 100%);
+}
+
+/* Change autocomplete styles in WebKit */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: white;
+  -webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0) inset;
+  transition: background-color 5000s ease-in-out 0s;}

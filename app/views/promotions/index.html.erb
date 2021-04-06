@@ -15,20 +15,17 @@
     <h3><p><%= t('.empty') %></p></h3>
   <% end %>
 
-    <% promo_approved = @promotions.joins(:promotion_approval)%>
-    <% promo_pending = @promotions.all - promo_approved%>
-  
     <br>
-    <% if promo_approved.any?%>
+    <% if @promotions.approved.any?%>
     <div id='approved'>
-      <%= render partial: 'promotion', locals:{promotions: promo_approved, 
+      <%= render partial: 'promotion', locals:{promotions: @promotions.approved, 
                                                header_title:t('headers.approved')}%>
     </div>
     <% end %>
 
-    <% if promo_pending.any?%>
+    <% if @promotions.pending.any?%>
       <div id='pending'>
-        <%= render partial: 'promotion', locals:{promotions: promo_pending, 
+        <%= render partial: 'promotion', locals:{promotions: @promotions.pending, 
                                                header_title:t('headers.pending')} %>
       </div>
     <% end %>

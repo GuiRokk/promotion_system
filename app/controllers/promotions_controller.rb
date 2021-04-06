@@ -3,7 +3,7 @@ class PromotionsController < ApplicationController
   before_action :fetch_promotion, only: [:show, :edit, :update, :destroy, :generate_coupons, :approve]
 
   def index
-    if params[:query] == ''
+    if :query.blank?
       flash.now[:notice] = t('.show_all')
       @promotions = Promotion.all
     else
@@ -55,7 +55,7 @@ class PromotionsController < ApplicationController
   end
 
   def approve
-    if current_user != @promotion.user
+    if @promotion.can_approve?(current_user)
       #PromotionApproval.create!(promotion: @promotion, user: current_user)
       current_user.promotion_approvals.create!(promotion: @promotion)
       redirect_to @promotion, notice: t('.success')
