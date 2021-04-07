@@ -4,8 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :promotions, dependent: :restrict_with_exception
-  has_many :promotion_approvals, dependent: :restrict_with_exception
+  has_many :promotions, dependent: :destroy
+  has_many :promotion_approvals, dependent: :nullify
   has_many :approved_promotions, through: :promotion_approvals, source: :promotion
 
   # def approved_promotions

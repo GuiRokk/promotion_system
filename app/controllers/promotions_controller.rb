@@ -1,5 +1,5 @@
 class PromotionsController < ApplicationController
-  before_action :authenticate_user! # , only: %i[index show new create update destroy generate_coupons approve]
+  before_action :authenticate_user!
   before_action :fetch_promotion, only: %i[show edit update destroy generate_coupons approve]
 
   def index
@@ -55,8 +55,11 @@ class PromotionsController < ApplicationController
 
   def approve
     if @promotion.can_approve?(current_user)
-      # PromotionApproval.create!(promotion: @promotion, user: current_user)
       current_user.promotion_approvals.create!(promotion: @promotion)
+      PromotionMailer
+        .with(promotion: @promotion, approver: current_user)
+        .approval_email
+        .deliver_now
       redirect_to @promotion, notice: t('.success')
     else
       redirect_to @promotion, notice: t('.failure')
