@@ -3,8 +3,7 @@
 
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|%>
     <%= render "devise/shared/error_messages", resource: resource %>
-
-    
+    <ul><%= flash[:alert] %></ul>
     <div class="user-box",>
     <br>
       <%= f.text_field :name, autofocus: true, placeholder: User.human_attribute_name(:name)%>

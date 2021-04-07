@@ -1,10 +1,10 @@
 require 'application_system_test_case'
-include LoginMacros
 
 class PromotionsTest < ApplicationSystemTestCase
-  test 'visit user profile' do
-    user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
+  include LoginMacros
 
+  test 'visit user profile' do
+    user = Fabricate(:user)
     visit root_path
     click_on 'Entrar'
     fill_in 'Email', with: user.email

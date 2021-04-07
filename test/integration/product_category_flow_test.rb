@@ -1,7 +1,8 @@
-require "test_helper"
-include LoginMacros
+require 'test_helper'
 
 class ProductCategoryFlowTest < ActionDispatch::IntegrationTest
+  include LoginMacros
+
   test 'cannot view index without login' do
     get product_categories_path
     assert_redirected_to new_user_session_path
@@ -28,7 +29,7 @@ class ProductCategoryFlowTest < ActionDispatch::IntegrationTest
 
   test 'can create a product' do
     login_user
-    post product_categories_path, params:{product_category:{name: 'Calça', code: 'ROUPA'}}
+    post product_categories_path, params: { product_category: { name: 'Calça', code: 'ROUPA' } }
 
     assert_redirected_to product_category_path(ProductCategory.last)
     follow_redirect!
@@ -37,7 +38,7 @@ class ProductCategoryFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cannot create a product without login' do
-    post product_categories_path, params:{product_category:{name: 'Calça', code: 'ROUPA'}}
+    post product_categories_path, params: { product_category: { name: 'Calça', code: 'ROUPA' } }
 
     assert_redirected_to new_user_session_path
   end
@@ -58,7 +59,7 @@ class ProductCategoryFlowTest < ActionDispatch::IntegrationTest
   test 'update a product' do
     login_user
     product = ProductCategory.create!(name: 'Calça', code: 'ROUPA')
-    patch product_category_path(product), params:{product_category:{name: 'Eletronico', code: 'ELETRO'}}
+    patch product_category_path(product), params: { product_category: { name: 'Eletronico', code: 'ELETRO' } }
 
     assert_redirected_to product_category_path(product)
     follow_redirect!
@@ -68,7 +69,7 @@ class ProductCategoryFlowTest < ActionDispatch::IntegrationTest
 
   test 'cannot update a product without login' do
     product = ProductCategory.create!(name: 'Calça', code: 'ROUPA')
-    patch product_category_path(product), params:{product_category:{name: 'Eletronico', code: 'ELETRO'}}
+    patch product_category_path(product), params: { product_category: { name: 'Eletronico', code: 'ELETRO' } }
 
     assert_redirected_to new_user_session_path
   end
@@ -78,7 +79,7 @@ class ProductCategoryFlowTest < ActionDispatch::IntegrationTest
     product = ProductCategory.create!(name: 'Calça', code: 'ROUPA')
     delete product_category_path(product)
     assert_redirected_to product_categories_path
-    refute ProductCategory.last
+    assert_not ProductCategory.last
   end
 
   test 'cannot destroy a product without login' do

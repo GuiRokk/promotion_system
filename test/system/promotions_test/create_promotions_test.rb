@@ -1,7 +1,8 @@
 require 'application_system_test_case'
-include LoginMacros
 
 class CreatePromotionsTest < ApplicationSystemTestCase
+  include LoginMacros
+
   test 'create promotion ' do
     user = login_user
     visit root_path
@@ -25,11 +26,10 @@ class CreatePromotionsTest < ApplicationSystemTestCase
     assert_link 'Voltar'
     assert_link 'Aprovar'
     assert_text "Criado por: #{user.email}"
-    refute_text "Aprovado por:"
+    refute_text 'Aprovado por:'
   end
- 
-  test 'create attributes cannot be blank ' do
 
+  test 'create attributes cannot be blank ' do
     login_user
     visit root_path
     click_on 'Promoções'
@@ -43,7 +43,7 @@ class CreatePromotionsTest < ApplicationSystemTestCase
     user = login_user
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033',user: user)
+                      expiration_date: '22/12/2033', user: user)
 
     visit root_path
     click_on 'Promoções'
@@ -53,6 +53,17 @@ class CreatePromotionsTest < ApplicationSystemTestCase
     click_on 'Criar Promoção'
 
     assert_text 'já está em uso', count: 2
+  end
+
+  test 'create date cannot be in the past ' do
+    login_user
+    visit root_path
+    click_on 'Promoções'
+    click_on 'Registrar Promoção'
+    fill_in 'Data de término', with: '12/22/1988'
+    click_on 'Criar Promoção'
+
+    assert_text 'não pode ser no passado'
   end
 
   test 'generate coupons for a promotion' do
@@ -74,5 +85,4 @@ class CreatePromotionsTest < ApplicationSystemTestCase
     refute_text 'NATAL10-0101'
     refute_link 'Editar Promoção'
   end
-
 end

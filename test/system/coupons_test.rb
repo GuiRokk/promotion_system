@@ -1,15 +1,13 @@
-require "application_system_test_case"
-include LoginMacros
+require 'application_system_test_case'
 
 class CouponsTest < ApplicationSystemTestCase
-
-  #testes rodando com login efetuado e promoções aprovadas
+  include LoginMacros
 
   test 'coupon is created, exists' do
     user = login_user
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user:user)
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033', user: user)
     approver = login_approver
     PromotionApproval.create!(promotion: promotion, user: approver)
 
@@ -23,21 +21,21 @@ class CouponsTest < ApplicationSystemTestCase
     user = login_user
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
-                                  code: 'NATAL10', discount_rate: 10, 
+                                  code: 'NATAL10', discount_rate: 10,
                                   coupon_quantity: 1,
                                   expiration_date: '22/12/2033', user: user)
     approver = login_approver
     PromotionApproval.create!(promotion: promotion, user: approver)
-    coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
+    Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
 
     visit promotion_path(promotion)
     within 'td#action-natal10-0001' do
       click_on 'Desativar'
     end
 
-    assert_text "Cupom NATAL10-0001 desativado com sucesso"
+    assert_text 'Cupom NATAL10-0001 desativado com sucesso'
     within 'td#action-natal10-0001' do
-      refute_link "Desativar"
+      refute_link 'Desativar'
       assert_link 'Reativar'
     end
     assert_text 'Cupom NATAL10-0001 desativado com sucesso'
@@ -46,11 +44,11 @@ class CouponsTest < ApplicationSystemTestCase
   test 're-enables a coupon' do
     user = login_user
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user:user)
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033', user: user)
     approver = login_approver
     PromotionApproval.create!(promotion: promotion, user: approver)
-    coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
+    Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
 
     visit promotion_path(promotion)
     within 'td#action-natal10-0001' do
@@ -59,17 +57,17 @@ class CouponsTest < ApplicationSystemTestCase
     end
 
     within 'td#action-natal10-0001' do
-      refute_link "Reativar"
+      refute_link 'Reativar'
       assert_link 'Desativar'
     end
-    assert_text "Cupom NATAL10-0001 reativado com sucesso"
+    assert_text 'Cupom NATAL10-0001 reativado com sucesso'
   end
 
   test 'search coupon successfuly' do
     user = login_user
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
-                                  code: 'NATAL10', discount_rate: 10, 
+                                  code: 'NATAL10', discount_rate: 10,
                                   coupon_quantity: 1,
                                   expiration_date: '22/12/2033', user: user)
     coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
@@ -97,10 +95,10 @@ class CouponsTest < ApplicationSystemTestCase
     user = login_user
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
-                                  code: 'NATAL10', discount_rate: 10, 
+                                  code: 'NATAL10', discount_rate: 10,
                                   coupon_quantity: 1,
                                   expiration_date: '22/12/2033', user: user)
-    coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
+    Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
     approver = login_approver
     PromotionApproval.create!(promotion: promotion, user: approver)
 
@@ -118,8 +116,8 @@ class CouponsTest < ApplicationSystemTestCase
   test 'cannot created coupon without login' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user:user)
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033', user: user)
     approver = User.create!(email: 'peter@iugu.com.br', password: '123123', name: 'Peter')
     PromotionApproval.create!(promotion: promotion, user: approver)
 
@@ -127,9 +125,4 @@ class CouponsTest < ApplicationSystemTestCase
     refute_link 'Gerar cupons'
     assert_current_path new_user_session_path
   end
-
-
-
-
-
 end

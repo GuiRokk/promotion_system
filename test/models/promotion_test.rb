@@ -1,11 +1,10 @@
-require "test_helper"
+require 'test_helper'
 
 class PromotionTest < ActiveSupport::TestCase
-
   test 'attributes cannot be blank' do
     promotion = Promotion.new
 
-    refute promotion.valid?
+    assert_not promotion.valid?
     assert_includes promotion.errors[:name], 'não pode ficar em branco'
     assert_includes promotion.errors[:code], 'não pode ficar em branco'
     assert_includes promotion.errors[:discount_rate], 'não pode ficar em '\
@@ -23,20 +22,18 @@ class PromotionTest < ActiveSupport::TestCase
                       expiration_date: '22/12/2033', user: user)
     promotion = Promotion.new(code: 'NATAL10', user: user)
 
-    refute promotion.valid?
+    assert_not promotion.valid?
     assert_includes promotion.errors[:code], 'já está em uso'
   end
 
   test 'name must be uniq' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10', discount_rate: 10, 
-                                  coupon_quantity: 2,
-                                  expiration_date: '22/12/2033', user: user)
+    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10,
+                      coupon_quantity: 2, expiration_date: '22/12/2033', user: user)
     promotion = Promotion.new(name: 'Natal')
 
-    refute promotion.valid?
+    assert_not promotion.valid?
     assert_includes promotion.errors[:name], 'já está em uso'
   end
 
@@ -44,7 +41,7 @@ class PromotionTest < ActiveSupport::TestCase
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
-                                  code: 'NATAL10', discount_rate: 10, 
+                                  code: 'NATAL10', discount_rate: 10,
                                   coupon_quantity: 2,
                                   expiration_date: '22/12/2033', user: user)
 
@@ -57,7 +54,7 @@ class PromotionTest < ActiveSupport::TestCase
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
-                                  code: 'NATAL10', discount_rate: 10, 
+                                  code: 'NATAL10', discount_rate: 10,
                                   coupon_quantity: 2,
                                   expiration_date: '22/12/2033', user: user)
 
@@ -71,46 +68,45 @@ class PromotionTest < ActiveSupport::TestCase
   test 'search promotion successfuly' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     xmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user:user)
+                             code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                             expiration_date: '22/12/2033', user: user)
     cyber = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
-                      expiration_date: '22/12/2033', user: user)
+                              code: 'CYBER15', discount_rate: 15, coupon_quantity: 90,
+                              expiration_date: '22/12/2033', user: user)
 
     result = Promotion.search('Natal')
     assert_includes result, xmas
-    refute_includes result, cyber
+    assert_not_includes result, cyber
   end
-
 
   test 'search promotion partial' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     xmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user:user)
+                             code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                             expiration_date: '22/12/2033', user: user)
     cyber = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
-                      expiration_date: '22/12/2033', user: user)
+                              code: 'CYBER15', discount_rate: 15, coupon_quantity: 90,
+                              expiration_date: '22/12/2033', user: user)
     christmassy = Promotion.create!(name: 'Natalina', description: 'Promoção de natal',
-                      code: 'NATAL11', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
+                                    code: 'NATAL11', discount_rate: 10, coupon_quantity: 100,
+                                    expiration_date: '22/12/2033', user: user)
 
     result = Promotion.search('natal')
 
     assert_includes result, christmassy
     assert_includes result, xmas
-    refute_includes result, cyber
+    assert_not_includes result, cyber
   end
 
   test 'search finds nothing' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
-    xmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user:user)
-    cyber = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
                       expiration_date: '22/12/2033', user: user)
-    christmassy = Promotion.create!(name: 'Natalina', description: 'Promoção de natal',
+    Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15', discount_rate: 15, coupon_quantity: 90,
+                      expiration_date: '22/12/2033', user: user)
+    Promotion.create!(name: 'Natalina', description: 'Promoção de natal',
                       code: 'NATAL11', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user: user)
 

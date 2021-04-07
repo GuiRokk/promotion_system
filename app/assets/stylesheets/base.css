@@ -93,9 +93,10 @@ div.field_with_errors {
 
 .devise-box {
   position: absolute;
+  margin-top: 0;
   top: 50%;
   left: 50%;
-  width: 400px;
+  width: 430px;
   padding: 40px;
   transform: translate(-50%, -50%);
   background: rgba(255, 255, 255, 0.2);
@@ -104,6 +105,7 @@ div.field_with_errors {
   border-radius: 10px;
   font-size: 13px;
 }
+
 .devise-box h1 {
   margin: 0 0 30px;
   padding: 0;
@@ -131,8 +133,25 @@ div.field_with_errors {
   border: none;
   outline: none;
   background: transparent;
-
 }
+.devise-box .actions {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0);
+  border: 2px solid #FFFfFF;
+  border-radius:0.15em;
+}
+
+.search{
+  font-size: 16px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0);
+  border: 2px solid #FFFfFF;
+  border-radius:0.15em;
+  padding: 4px 10px;}
 
 ::placeholder{
   top:0;
@@ -144,16 +163,7 @@ div.field_with_errors {
   opacity: .7;
 }
 
-.devise-box .actions {
-  position: relative;
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px;
-  color: white;
-  background-color: rgba(0, 0, 0, 0);
-  border: 2px solid #FFFfFF;
-  border-radius:0.15em;
-}
+
 
 .actions:hover{
   background: linear-gradient(165deg, #ff5f6d 0%, #ffc371 100%);
@@ -170,5 +180,4 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   -webkit-text-fill-color: white;
-  -webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0) inset;
   transition: background-color 5000s ease-in-out 0s;}

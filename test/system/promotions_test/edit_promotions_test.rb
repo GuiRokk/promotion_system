@@ -1,15 +1,16 @@
 require 'application_system_test_case'
-include LoginMacros
 
 class EditPromotionsTest < ApplicationSystemTestCase
+  include LoginMacros
+
   test 'user edits a promotion' do
     user = login_user
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',user: user)
+                                  expiration_date: '22/12/2033', user: user)
 
     visit promotion_path(promotion)
-    click_on "Editar Promoção"
+    click_on 'Editar Promoção'
     fill_in 'Nome', with: 'Halloween'
     click_on 'Atualizar Promoção'
 
@@ -25,7 +26,7 @@ class EditPromotionsTest < ApplicationSystemTestCase
                                   expiration_date: '22/12/2033', user: user)
 
     visit promotion_path(promotion)
-    click_on "Editar Promoção"
+    click_on 'Editar Promoção'
     fill_in 'Nome', with: ''
     fill_in 'Descrição', with: ''
     fill_in 'Código', with: ''
@@ -40,7 +41,7 @@ class EditPromotionsTest < ApplicationSystemTestCase
   test 'user edits a promotion with repeated name/code' do
     user = login_user
     Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
+                      code: 'CYBER15', discount_rate: 15, coupon_quantity: 90,
                       expiration_date: '22/12/2033', user: user)
 
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
@@ -48,7 +49,7 @@ class EditPromotionsTest < ApplicationSystemTestCase
                                   expiration_date: '22/12/2033', user: user)
 
     visit promotion_path(promotion)
-    click_on "Editar Promoção"
+    click_on 'Editar Promoção'
     fill_in 'Nome', with: 'Cyber Monday'
     fill_in 'Código', with: 'CYBER15'
 
@@ -67,21 +68,20 @@ class EditPromotionsTest < ApplicationSystemTestCase
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
     within 'td#action-natal10-0001' do
-      click_on "Desativar"
+      click_on 'Desativar'
     end
     within 'td#action-natal10-0002' do
-      click_on "Desativar"
+      click_on 'Desativar'
     end
     within 'td#action-natal10-0001' do
-      click_on "Reativar"
+      click_on 'Reativar'
     end
 
     within 'td#action-natal10-0001' do
       assert_link 'Desativar'
       refute_link 'Reativar'
+    end
+    assert_text 'Ativo', count: 1
+    assert_text 'Desativado', count: 1
   end
-    assert_text 'Ativo', count:1
-    assert_text 'Desativado',count:1
-  end
-
 end

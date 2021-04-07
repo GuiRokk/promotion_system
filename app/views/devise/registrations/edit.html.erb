@@ -2,9 +2,10 @@
 <br>
 <div class = 'devise-box'>
   <h1>Edição de <%= resource.model_name.human %></h1>
+  
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
-
+    <ul><%= flash[:alert] %></ul>
     <div class="user-box">
       <%= f.label :name %><br>
       <%= f.text_field :name,autofocus: true %>
@@ -37,7 +38,6 @@
       <%= f.label :current_password %> <br />
       <%= f.password_field :current_password, placeholder: 'Insira sua senha para confirmar as mudanças' %>
     </div>
-    <br>
     <br>
     <div >
       <%= f.submit class: "actions" %>

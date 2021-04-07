@@ -1,18 +1,19 @@
 require 'application_system_test_case'
-include LoginMacros
 
 class SearchPromotionsTest < ApplicationSystemTestCase
+  include LoginMacros
+
   test 'search promotion by term and find results' do
     user = login_user
     xmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
+                             code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                             expiration_date: '22/12/2033', user: user)
     cyber = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
-                      expiration_date: '22/12/2033', user: user)
+                              code: 'CYBER15', discount_rate: 15, coupon_quantity: 90,
+                              expiration_date: '22/12/2033', user: user)
     christmassy = Promotion.create!(name: 'Natalina', description: 'Promoção de natal',
-                      code: 'NATAL11', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
+                                    code: 'NATAL11', discount_rate: 10, coupon_quantity: 100,
+                                    expiration_date: '22/12/2033', user: user)
 
     visit root_path
     click_on 'Promoções'
@@ -29,8 +30,8 @@ class SearchPromotionsTest < ApplicationSystemTestCase
   test 'search and find no results' do
     user = login_user
     xmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
+                             code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                             expiration_date: '22/12/2033', user: user)
 
     visit root_path
     click_on 'Promoções'
@@ -45,5 +46,22 @@ class SearchPromotionsTest < ApplicationSystemTestCase
     refute_text xmas.name
   end
 
+  test 'search with blank and show all itens' do
+    user = login_user
+    xmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                             code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                             expiration_date: '22/12/2033', user: user)
 
+    visit root_path
+    click_on 'Promoções'
+    query = ''
+    within 'form' do
+      fill_in 'query', with: query
+      click_on 'Buscar'
+    end
+
+    assert_text 'Mostrando todos os itens'
+    assert_current_path promotions_path(query: query)
+    assert_link xmas.name
+  end
 end

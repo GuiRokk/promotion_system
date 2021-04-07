@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   root 'home#index'
 
   get 'search', to: 'search#show'
@@ -12,13 +11,13 @@ Rails.application.routes.draw do
   end
 
   resources :coupons do
-      post 'disable', on: :member
-      post  'enable', on: :member
+    post 'disable', on: :member
+    post 'enable', on: :member
   end
 
   resources :product_categories
 
-  devise_for :users, controllers: {registrations:  'registrations'}
+  devise_for :users, controllers: { registrations: 'registrations' }
   resources :users, only: [:show]
 
   namespace :api, constraints: ->(req) { req.format == :json } do

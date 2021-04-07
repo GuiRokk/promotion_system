@@ -6,7 +6,7 @@
 <div id="search">
   <%= form_with url: search_path, method: :get do |f| %>
     <br>
-    <%= f.text_field :query, placeholder: t('.search_header'),  size:"30" %>
+    <%= f.text_field :query, placeholder: t('.search_header'),  size:"30" , class: 'search'%>
     <%= f.submit t('buttons.search'), class: 'btn' %>
   <% end %>
 </div>

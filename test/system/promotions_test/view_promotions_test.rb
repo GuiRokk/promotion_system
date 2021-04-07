@@ -1,14 +1,15 @@
 require 'application_system_test_case'
-include LoginMacros
 
 class ViewPromotionsTest < ApplicationSystemTestCase
+  include LoginMacros
+
   test 'view promotions' do
     user = login_user
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user: user)
     Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
+                      code: 'CYBER15', discount_rate: 15, coupon_quantity: 90,
                       expiration_date: '22/12/2033', user: user)
 
     visit root_path
@@ -23,10 +24,10 @@ class ViewPromotionsTest < ApplicationSystemTestCase
   test 'view approved promotions' do
     user = login_user
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033', user: user)
     Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
+                      code: 'CYBER15', discount_rate: 15, coupon_quantity: 90,
                       expiration_date: '22/12/2033', user: user)
     approver = login_approver
     PromotionApproval.create!(promotion: promotion, user: approver)
@@ -45,7 +46,7 @@ class ViewPromotionsTest < ApplicationSystemTestCase
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user: user)
     Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
+                      code: 'CYBER15', discount_rate: 15, coupon_quantity: 90,
                       expiration_date: '22/12/2033', user: user)
 
     visit root_path
@@ -95,14 +96,12 @@ class ViewPromotionsTest < ApplicationSystemTestCase
   end
 
   test "don't view promotion link without login" do
-
     visit root_path
 
     refute_link 'Promoções'
   end
 
   test "don't view promotions using route without login" do
-
     visit promotions_path
 
     assert_current_path new_user_session_path
@@ -111,47 +110,37 @@ class ViewPromotionsTest < ApplicationSystemTestCase
   test "don't view promotions details using route without login" do
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     promotion = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
-                      expiration_date: '22/12/2033', user: user)
+                                  code: 'CYBER15', discount_rate: 15, coupon_quantity: 90,
+                                  expiration_date: '22/12/2033', user: user)
 
     visit promotion_path(promotion)
 
     assert_current_path new_user_session_path
-end
-
-test 'view approved and pending approval promotions' do
-  user = login_user
-  promotion1 = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
-                    code: 'CYBER15',discount_rate: 15,coupon_quantity: 90,
-                    expiration_date: '22/12/2033', user: user)
-
-  promotion2 = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                                code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                                expiration_date: '22/12/2033', user: user)
-  approver = login_approver
-  PromotionApproval.create!(promotion: promotion1, user: approver)
-
-  visit promotions_path
-
-  within 'div#approved' do
-    assert_text 'Promoções aprovadas'
-    assert_link promotion1.name
-    refute_link promotion2.name
   end
-  within 'div#pending' do
-    assert_text 'Aguardando aprovação'
-    assert_link promotion2.name
-    refute_link promotion1.name
+
+  test 'view approved and pending approval promotions' do
+    user = login_user
+    promotion1 = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
+                                   code: 'CYBER15', discount_rate: 15, coupon_quantity: 90,
+                                   expiration_date: '22/12/2033', user: user)
+
+    promotion2 = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                   expiration_date: '22/12/2033', user: user)
+    approver = login_approver
+    PromotionApproval.create!(promotion: promotion1, user: approver)
+
+    visit promotions_path
+
+    within 'div#approved' do
+      assert_text 'Promoções aprovadas'
+      assert_link promotion1.name
+      refute_link promotion2.name
+    end
+    within 'div#pending' do
+      assert_text 'Aguardando aprovação'
+      assert_link promotion2.name
+      refute_link promotion1.name
+    end
   end
-end
-
-
-
-
-
-
-
-
-
-
 end

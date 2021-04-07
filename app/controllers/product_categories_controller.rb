@@ -1,13 +1,12 @@
 class ProductCategoriesController < ApplicationController
-before_action :fetch_product, only: %i[show edit update destroy]
-before_action :authenticate_user!
+  before_action :fetch_product, only: %i[show edit update destroy]
+  before_action :authenticate_user!
 
   def index
     @products = ProductCategory.all
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @product = ProductCategory.new
@@ -23,8 +22,7 @@ before_action :authenticate_user!
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @product.update(product_params)
@@ -44,7 +42,7 @@ before_action :authenticate_user!
   private
 
   def product_params
-    params.require(:product_category).permit(:name, :code)  
+    params.require(:product_category).permit(:name, :code)
   end
 
   def fetch_product
