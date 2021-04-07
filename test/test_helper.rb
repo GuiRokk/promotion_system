@@ -21,5 +21,5 @@ class ActiveSupport::TestCase
   # Minitest.load_plugins
   # Minitest::PrideIO.pride!
 
-  Dir[Rails.root.join('test/support/**/*.rb')].each { |f| require f }
+  Dir[Rails.root.join('test/support/**/*.rb')].sort.each { |f| require f }
 end

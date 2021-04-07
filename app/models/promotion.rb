@@ -7,8 +7,8 @@ class Promotion < ApplicationRecord
   validates :name, :code, :discount_rate, :coupon_quantity,
             :expiration_date, presence: true
 
-  #validates :name, :code, uniqueness: true
-  validates_uniqueness_of :name, :code
+  validates :name, :code, uniqueness: true
+
   validate :expiration_date_cannot_be_in_the_past
 
   def generate_coupons!

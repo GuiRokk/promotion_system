@@ -3,15 +3,8 @@ class SearchController < ApplicationController
     query = params[:query]
     @coupon = Coupon.search(query)
     @promotions = Promotion.search(query)
-    if @promotions.empty?
-      if @coupon.nil?
-        flash[:notice] = t('.failed')
-        redirect_to promotions_path(query: query)
-      else
-        @coupon
-      end
-    else
-      redirect_to promotions_path(query: query)
-    end
+    redirect_to promotions_path(query: query), notice: t('.failed') if @coupon.nil? && @promotions.empty?
+    @coupon unless @coupon.nil?
+    redirect_to promotions_path(query: query) unless @promotions.empty?
   end
 end
