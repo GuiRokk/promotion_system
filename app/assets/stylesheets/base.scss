@@ -1,10 +1,12 @@
+$text-color: white;
+$test-color: red;
 
  .body{
   margin: inherit;
   padding:0;
   min-height: 100vh;
   background: repeating-linear-gradient(165deg, #1792be 0%, #182848 50%,  #41db96 100%);
-  color:white;
+  color: $text-color;
   font-family: Roboto;
  }
 
