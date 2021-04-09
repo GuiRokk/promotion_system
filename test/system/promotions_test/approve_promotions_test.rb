@@ -13,7 +13,7 @@ class ApprovePromotionsTest < ApplicationSystemTestCase
     visit promotion_path(promotion)
 
     assert_emails 1 do
-      accept_confirm {click_on 'Aprovar'}
+      accept_confirm { click_on 'Aprovar' }
       assert_text 'Promoção aprovada com sucesso'
     end
 
