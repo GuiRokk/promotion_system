@@ -37,3 +37,4 @@ yarn-debug.log*
 .yarn-integrity
 
 coverage
+.vscode/settings.json
