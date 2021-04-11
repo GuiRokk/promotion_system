@@ -1,5 +1,5 @@
 Fabricator(:user) do
-  email 'user@iugu.com.br'
+  email { sequence(:email) { |i| "user#{i}@iugu.com.br" } }
   password '123123'
-  name 'User'
+  name { sequence(:name) { |i| "user#{i}" } }
 end

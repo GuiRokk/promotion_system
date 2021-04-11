@@ -1,8 +1,6 @@
 require 'application_system_test_case'
 
 class ApprovePromotionsTest < ApplicationSystemTestCase
-  include LoginMacros
-
   test 'user approves promotion' do
     user = login_user
     promotion = Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',

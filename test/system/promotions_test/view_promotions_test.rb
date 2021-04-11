@@ -1,8 +1,6 @@
 require 'application_system_test_case'
 
 class ViewPromotionsTest < ApplicationSystemTestCase
-  include LoginMacros
-
   test 'view promotions' do
     user = login_user
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
