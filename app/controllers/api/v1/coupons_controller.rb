@@ -10,5 +10,4 @@ class Api::V1::CouponsController < Api::V1::ApiController
   end
 end
 
-
-#TODO: VAI TER MAIS CONTEUDO DO CARD #21 (REQUER, CARDS 18, 22)
+# TODO: VAI TER MAIS CONTEUDO DO CARD #21 (REQUER, CARDS 18, 22)

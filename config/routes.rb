@@ -20,10 +20,11 @@ Rails.application.routes.draw do
 
   namespace :api, constraints: ->(req) { req.format == :json } do
     namespace :v1 do
+      resources :promotions, only: [:show, :index, :create, :update, :destroy], param: :name
+      resources :product_categories, only: [:show, :index, :create, :update, :destroy], param: :code
       resources :coupons, only: [:show], param: :code do
         post 'burn', on: :member
       end
-      resources :promotions, only: [:show, :index, :create, :update, :destroy], param: :name
     end
   end
 end

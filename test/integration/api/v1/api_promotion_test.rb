@@ -160,9 +160,9 @@ class ApiPromotionTest < ActionDispatch::IntegrationTest
   test 'cannot create promotion, name and code must be unique' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL10', discount_rate: 10,
-                                  coupon_quantity: 2,	expiration_date: '22/12/2033', user: user)
+                      coupon_quantity: 2,	expiration_date: '22/12/2033', user: user)
 
-    post "/api/v1/promotions", params: { promotion: { name: 'Natal', description: 'Promoção de Natal',
+    post '/api/v1/promotions', params: { promotion: { name: 'Natal', description: 'Promoção de Natal',
                                                       code: 'NATAL10', discount_rate: 15, coupon_quantity: 5,
                                                       expiration_date: '22/12/2033', user_id: user.id } }, as: :json
 
@@ -174,7 +174,7 @@ class ApiPromotionTest < ActionDispatch::IntegrationTest
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL10', discount_rate: 10,
                       coupon_quantity: 2,	expiration_date: '22/12/2033', user: user)
     promotion = Promotion.create!(name: 'Cyber', description: 'Promoção de Cyber', code: 'CYBER15', discount_rate: 10,
-                      coupon_quantity: 2,	expiration_date: '22/12/2033', user: user)
+                                  coupon_quantity: 2,	expiration_date: '22/12/2033', user: user)
 
     patch "/api/v1/promotions/#{promotion.name}", params: { promotion: { name: 'Natal',
                                                                          description: 'Promoção de Natal',
@@ -182,7 +182,7 @@ class ApiPromotionTest < ActionDispatch::IntegrationTest
                                                                          coupon_quantity: 2,
                                                                          expiration_date: '22/12/2033',
                                                                          user: user } }, as: :json
-    byebug
+
     assert_response :unprocessable_entity
   end
 end

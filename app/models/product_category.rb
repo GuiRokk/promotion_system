@@ -4,4 +4,9 @@ class ProductCategory < ApplicationRecord
   validates :code, uniqueness: { message: 'deve ser único' }
 
   # belongs_to :promotions
+
+  def can_update?(params)
+    params.key?(:name) &&
+      params.key?(:code)
+  end
 end
