@@ -37,6 +37,7 @@ pt-BR:
       success: Promoção editada com sucesso
     destroy:
       success: Promoção %{promotion_name} apagada com sucesso
+      failed: Falhou - A promoção possui cupons ativos
     approve:
       success: Promoção aprovada com sucesso
       failure: Não pode ser aprovado pelo criador da promoção

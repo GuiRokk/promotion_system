@@ -18,10 +18,12 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'registrations' }
   resources :users, only: [:show]
 
-  namespace :api do
+  namespace :api, constraints: ->(req) { req.format == :json } do
     namespace :v1 do
-      resources :coupons, only: [:show], param: :code
-      resources :promotions, only: [:show, :index, :create, :destroy], param: :name
+      resources :coupons, only: [:show], param: :code do
+        post 'burn', on: :member
+      end
+      resources :promotions, only: [:show, :index, :create, :update, :destroy], param: :name
     end
   end
 end

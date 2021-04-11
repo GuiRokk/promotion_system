@@ -33,6 +33,8 @@ class PromotionsController < ApplicationController
   def edit; end
 
   def update
+    return unless @promotion.can_update?(promotion_params)
+
     if @promotion.update(promotion_params)
       flash[:notice] = t('.success')
       redirect_to_show
@@ -48,9 +50,14 @@ class PromotionsController < ApplicationController
   end
 
   def destroy
-    @promotion.destroy
-    flash[:notice] = t('.success', promotion_name: @promotion.name)
-    redirect_to_index
+    if @promotion.can_delete?
+      @promotion.destroy
+      flash[:notice] = t('.success', promotion_name: @promotion.name)
+      redirect_to_index
+    else
+      flash[:notice] = t('.failed')
+      redirect_to_show
+    end
   end
 
   def approve
@@ -88,11 +95,4 @@ class PromotionsController < ApplicationController
   def redirect_to_index
     redirect_to promotions_path
   end
-
-  # def can_be_approved
-  # redirect_to @promotion
-  # alert: 'nao pode fazer isso'
-  # end
-
-  # TODO: VER ISSO AQUI
 end

@@ -1,42 +1,41 @@
 class Api::V1::PromotionsController < Api::V1::ApiController
-  before_action :fetch_promotion, only: %i[show destroy]
+  before_action :fetch_promotion, only: %i[show update destroy]
 
   def show
-    if @promotion
-      render json: @promotion
-    else
-      render json: 'Atenção - Promoção Inexistente'
-    end
+    render :show
   end
 
   def index
     @promotions = Promotion.all
-    if @promotions.any?
-      render json: @promotions.as_json(only: [:name]) unless @promotions.empty?
-    else
-      render json: 'Nada para mostrar - Não existem promoções cadastradas'
-    end
+    raise ActiveRecord::RecordNotFound unless @promotions.any?
+
+    render json: @promotions
   end
 
   def create
-    @promotion = Promotion.new(promotion_params)
-    if @promotion.save
-      render json: @promotion
-    else
-      render json: @promotion.errors
-    end
+    @promotion = Promotion.create!(promotion_params)
+    render :show, status: :created
+  end
+
+  def update
+    raise ActiveRecord::RecordInvalid unless @promotion.can_update?(promotion_params)
+
+    @promotion.update!(promotion_params)
+    render :show
   end
 
   def destroy
-    @promotion.destroy
-    render json: "Promoção #{@promotion.name} apagada com sucesso"
+    raise ActiveRecord::RecordNotDestroyed unless @promotion.can_delete?
+
+    @promotion.destroy!
+    render json: "Promoção #{@promotion.name} apagada com sucesso", status: :no_content
   end
 end
 
 private
 
 def fetch_promotion
-  @promotion = Promotion.find_by(name: params[:name])
+  @promotion = Promotion.find_by!(name: params[:name])
 end
 
 def promotion_params

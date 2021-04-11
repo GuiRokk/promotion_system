@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class PromotionFlowTest < ActionDispatch::IntegrationTest
-  include LoginMacros
-
   test 'cannot view index without login' do
     get promotions_path
     assert_redirected_to new_user_session_path
@@ -76,6 +74,18 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
     assert_redirected_to promotion_path(promotion)
     follow_redirect!
     assert_select 'h3', 'Carnaval - Promoção de Carnaval'
+  end
+
+  test 'cannot update a promotion with missing param => name' do
+    user = login_user
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL10',
+                                  discount_rate: 10, coupon_quantity: 100, expiration_date: '22/12/2033',
+                                  user: user)
+
+    patch promotion_path(promotion), params: { promotion: { code: 'CARNA20', discount_rate: 20,
+                                                            coupon_quantity: 7, expiration_date: '04/06/2055' } }
+
+    assert_response :no_content
   end
 
   test 'cannot update a promotion without login ' do
@@ -171,5 +181,17 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
     post approve_promotion_path(promotion)
     assert promotion.reload.approved?
     assert_equal 'Promoção aprovada com sucesso', flash[:notice]
+  end
+
+  test 'cannot delete promotion with ative coupons' do
+    user = login_user
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033', user: user)
+    Coupon.create!(code: 'NATAL10-0001', promotion: promotion, status: 0)
+
+    delete promotion_path(promotion)
+    assert Promotion.last
+    assert_equal 'Falhou - A promoção possui cupons ativos', flash[:notice]
   end
 end

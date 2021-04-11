@@ -3,9 +3,9 @@ class Promotion < ApplicationRecord
   has_many :coupons, dependent: :destroy # restrict_with_error
   has_one :promotion_approval, dependent: :destroy
   has_one :approver, through: :promotion_approval, source: :user
+  # has_many :product_categories
 
-  validates :name, :code, :discount_rate, :coupon_quantity,
-            :expiration_date, presence: true
+  validates :name, :code, :discount_rate, :coupon_quantity, :expiration_date, presence: true
 
   validates :name, :code, uniqueness: true
 
@@ -41,6 +41,18 @@ class Promotion < ApplicationRecord
 
   def can_approve?(current_user)
     user != current_user
+  end
+
+  def can_delete?
+    coupons.active.empty?
+  end
+
+  def can_update?(params)
+    params.key?(:name) &&
+      params.key?(:code) &&
+      params.key?(:discount_rate) &&
+      params.key?(:coupon_quantity) &&
+      params.key?(:expiration_date)
   end
 
   private
