@@ -5,10 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :promotions, dependent: :destroy
+
   has_many :promotion_approvals, dependent: :nullify
   has_many :approved_promotions, through: :promotion_approvals, source: :promotion
-
-  # def approved_promotions
-  # Promotion.joins(:promotion_approval).where(promotion_approvals: {user: self})
-  # end
 end

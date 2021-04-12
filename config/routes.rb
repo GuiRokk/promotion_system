@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   resources :promotions do
     post 'generate_coupons', on: :member
     post 'approve',          on: :member
+    get 'view_products', on: :member
+    post 'add_products', on: :member
   end
 
   resources :coupons do

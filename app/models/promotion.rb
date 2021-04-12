@@ -3,7 +3,8 @@ class Promotion < ApplicationRecord
   has_many :coupons, dependent: :destroy # restrict_with_error
   has_one :promotion_approval, dependent: :destroy
   has_one :approver, through: :promotion_approval, source: :user
-  # has_many :product_categories
+  has_many :promotion_categories, dependent: :destroy
+  has_many :product_categories, through: :promotion_categories
 
   validates :name, :code, :discount_rate, :coupon_quantity, :expiration_date, presence: true
 
@@ -53,6 +54,10 @@ class Promotion < ApplicationRecord
       params.key?(:discount_rate) &&
       params.key?(:coupon_quantity) &&
       params.key?(:expiration_date)
+  end
+
+  def prod_exists?(prod)
+    PromotionCategory.where(['promotion_id = ? and product_category_id = ?', id, prod.id]).empty?
   end
 
   private

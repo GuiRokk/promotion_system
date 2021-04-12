@@ -1,0 +1,7 @@
+<%= form_with url: add_products_promotion_path do |form| %>
+  <div>
+		<%= form.collection_check_boxes :product_categories_ids, @prods, :id, :code %>
+	</div>
+  <br>
+  <div><%= form.submit class: 'btn' %></div>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_07_161948) do
+ActiveRecord::Schema.define(version: 2021_04_12_011121) do
 
   create_table "coupons", force: :cascade do |t|
     t.string "code"
@@ -37,6 +37,15 @@ ActiveRecord::Schema.define(version: 2021_04_07_161948) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["promotion_id"], name: "index_promotion_approvals_on_promotion_id"
     t.index ["user_id"], name: "index_promotion_approvals_on_user_id"
+  end
+
+  create_table "promotion_categories", force: :cascade do |t|
+    t.integer "promotion_id", null: false
+    t.integer "product_category_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_category_id"], name: "index_promotion_categories_on_product_category_id"
+    t.index ["promotion_id"], name: "index_promotion_categories_on_promotion_id"
   end
 
   create_table "promotions", force: :cascade do |t|
@@ -70,5 +79,7 @@ ActiveRecord::Schema.define(version: 2021_04_07_161948) do
   add_foreign_key "coupons", "promotions"
   add_foreign_key "promotion_approvals", "promotions"
   add_foreign_key "promotion_approvals", "users"
+  add_foreign_key "promotion_categories", "product_categories"
+  add_foreign_key "promotion_categories", "promotions"
   add_foreign_key "promotions", "users"
 end

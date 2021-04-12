@@ -1,7 +1,6 @@
 class PromotionsController < ApplicationController
   before_action :authenticate_user!
   before_action :fetch_promotion, only: %i[show edit update destroy generate_coupons approve]
-
   def index
     query = params[:query]
     if query == ''
@@ -15,6 +14,7 @@ class PromotionsController < ApplicationController
   def show; end
 
   def new
+    # @cat == current_user.is_admin?
     @promotion = Promotion.new
   end
 
@@ -24,6 +24,7 @@ class PromotionsController < ApplicationController
     # Promotion.new(**promotions_params, user: current_user) -> Double splat operator (merge de cjaves para hash)
     @promotion = current_user.promotions.new(promotion_params) # vem por causa do has_many
     if @promotion.save
+
       redirect_to_show
     else
       render :new
@@ -71,6 +72,23 @@ class PromotionsController < ApplicationController
     else
       redirect_to @promotion, notice: t('.failure')
     end
+  end
+
+  def view_products
+    @prods = ProductCategory.all
+    @promotion = Promotion.find(params[:id])
+  end
+
+  def add_products
+    ids = params[:product_categories_ids].reject!(&:empty?)
+    @promotion = Promotion.find(params[:id])
+    ids.each do |id|
+      @product_category = ProductCategory.find(id)
+      flash[:notice] = 'já está nessa promoção' unless @promotion.prod_exists?(@product_category)
+
+      PromotionCategory.create!(promotion: @promotion, product_category: @product_category)
+    end
+    redirect_to_show
   end
 
   private

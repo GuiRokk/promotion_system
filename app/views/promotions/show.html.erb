@@ -71,3 +71,10 @@
   <p><%= t('headers.approved_by') %>: <%= @promotion.promotion_approval.user.email %></p>
 <% end %>
 </div>
+
+<%= link_to 'Selecionar Produtos', view_products_promotion_path(@promotion), class: 'btn' %>
+
+
+<% @promotion.product_categories.each do |pc| %>
+  <%= pc.code %>
+<% end %>
