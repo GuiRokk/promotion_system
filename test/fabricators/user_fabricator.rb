@@ -3,3 +3,4 @@ Fabricator(:user) do
   password '123123'
   name { sequence(:name) { |i| "user#{i}" } }
 end
+rout

@@ -47,7 +47,6 @@ class Promotion < ApplicationRecord
   def can_delete?
     coupons.active.empty?
   end
-
   def can_update?(params)
     params.key?(:name) &&
       params.key?(:code) &&
