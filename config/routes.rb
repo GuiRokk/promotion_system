@@ -11,9 +11,15 @@ Rails.application.routes.draw do
   end
 
   resources :coupons do
-    post 'disable', on: :member
+    post 'disable', on: :member, as: :disable
     post 'enable',  on: :member
   end
+
+  namespace :admin do
+    get 'admins', to: 'admins#index'
+ end
+
+
 
   resources :product_categories
 

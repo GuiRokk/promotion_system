@@ -15,7 +15,7 @@ class PromotionTest < ActiveSupport::TestCase
                                                         ' branco'
   end
 
-  test 'code must be uniq' do
+  test 'code must be unique' do
     other_promotion = Fabricate(:promotion)
     promotion = Promotion.new(code: other_promotion.code)
 
@@ -23,7 +23,7 @@ class PromotionTest < ActiveSupport::TestCase
     assert_includes promotion.errors[:code], 'já está em uso'
   end
 
-  test 'name must be uniq' do
+  test 'name must be unique' do
     user = User.create!(email: 'test@iugu.com.br', password: '123123', name: 'Fulano')
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10,

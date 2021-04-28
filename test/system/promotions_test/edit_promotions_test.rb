@@ -19,7 +19,7 @@ class EditPromotionsTest < ApplicationSystemTestCase
     refute_link 'Natal'
   end
 
-  test 'user edits a promotion with blanks' do
+  test 'user cannot edit a promotion with blanks' do
     user = login_user
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
@@ -38,7 +38,7 @@ class EditPromotionsTest < ApplicationSystemTestCase
     assert_text 'não pode ficar em branco', count: 5
   end
 
-  test 'user edits a promotion with repeated name/code' do
+  test 'user cannot edits a promotion with repeated name/code' do
     user = login_user
     Promotion.create!(name: 'Cyber Monday', description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15, coupon_quantity: 90,
